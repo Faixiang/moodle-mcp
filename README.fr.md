@@ -1,19 +1,9 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_27fb0861d15311f18460525400393706
-    ReservedCode1: WTUCSr4p4BhW109JnogmCGIjVb3Xn2HNRLwaP9g9FZkk2TqnSXkGgoF2TGUm51DlB3A6e3XXeogpq4m3ELdlDFWfcKSQ9zSL7sQqGwiiADg06cWAOy0Kd05JSomDXUiPGhhLb9y9F0h1yrv+/0Ac7TQ9cqdPTCzwERgcNRb9ToTxizvQH8G48J/oaqc=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_27fb0861d15311f18460525400393706
-    ReservedCode2: WTUCSr4p4BhW109JnogmCGIjVb3Xn2HNRLwaP9g9FZkk2TqnSXkGgoF2TGUm51DlB3A6e3XXeogpq4m3ELdlDFWfcKSQ9zSL7sQqGwiiADg06cWAOy0Kd05JSomDXUiPGhhLb9y9F0h1yrv+/0Ac7TQ9cqdPTCzwERgcNRb9ToTxizvQH8G48J/oaqc=
----
-
 <div align="center">
 
-<img src="docs/banner.svg" alt="moodle-mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
 
 # Moodle-Mcp
+
 ### Le Moodle que les agents IA peuvent vraiment utiliser
 
 Lisez les devoirs, les échéances et les fichiers de cours directement depuis l'API Web Service de Moodle. Sans navigateur, sans scraper, sans clics.
@@ -270,4 +260,3 @@ Bugs et suggestions : [ouvrez une issue](https://github.com/Faixiang/moodle-mcp/
 ## Licence 📝
 
 MIT — voir [LICENSE](LICENSE).
-*（内容由AI生成，仅供参考）*

@@ -1,19 +1,9 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_262acd13d15311f196c5525400248c00
-    ReservedCode1: R6nT9b1/IGSKvLCGFGm5p+MbdNz0d4sqtkCkS7nEP/uceBFMOc+AqgdXa7vnx0HPQhLy6lneB8DjXtsEzEiDMedxVCtPQ0bEGMvIfi5edMEBtl6dLqBXhv7efcpYJPxwZNXrv7cubUqFAcRhqRlmcJo2YQkbtLvMzjKq+kZu1QYgabIlN+DCu8Oadns=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_262acd13d15311f196c5525400248c00
-    ReservedCode2: R6nT9b1/IGSKvLCGFGm5p+MbdNz0d4sqtkCkS7nEP/uceBFMOc+AqgdXa7vnx0HPQhLy6lneB8DjXtsEzEiDMedxVCtPQ0bEGMvIfi5edMEBtl6dLqBXhv7efcpYJPxwZNXrv7cubUqFAcRhqRlmcJo2YQkbtLvMzjKq+kZu1QYgabIlN+DCu8Oadns=
----
-
 <div align="center">
 
-<img src="docs/banner.svg" alt="moodle-mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
 
 # Moodle-Mcp
+
 ### AI 에이전트가 실제로 쓸 수 있는 Moodle
 
 Moodle Web Service API에서 과제, 마감일, 강의 자료를 직접 가져옵니다. 브라우저도, 스크레이퍼도, 페이지 클릭도 필요 없습니다.
@@ -270,4 +260,3 @@ Claude Desktop / Cursor(`mcp.json`):
 ## 라이선스 📝
 
 MIT — [LICENSE](LICENSE) 참고.
-*（内容由AI生成，仅供参考）*

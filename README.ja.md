@@ -1,19 +1,9 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_24e7068dd15311f18460525400393706
-    ReservedCode1: BTzoEV6u2FSokn1I9rQmUUuVWmykXISawoxl5F5g/YGqwBa6fsigEW27ECjv3iy+zVOokK0aDLCcnPpGOKEFeO8AbCw83ws7AuqBGsJQQRUXHIa36iNWpayScKt3HSnyM8znmuLUczGNT/86WAtOWpY6Mv6NyI8fvEncAHq2XQkBepTiiF/qGn4Vges=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_24e7068dd15311f18460525400393706
-    ReservedCode2: BTzoEV6u2FSokn1I9rQmUUuVWmykXISawoxl5F5g/YGqwBa6fsigEW27ECjv3iy+zVOokK0aDLCcnPpGOKEFeO8AbCw83ws7AuqBGsJQQRUXHIa36iNWpayScKt3HSnyM8znmuLUczGNT/86WAtOWpY6Mv6NyI8fvEncAHq2XQkBepTiiF/qGn4Vges=
----
-
 <div align="center">
 
-<img src="docs/banner.svg" alt="moodle-mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
 
 # Moodle-Mcp
+
 ### AI エージェントが本当に使える Moodle
 
 Moodle の Web Service API から課題・締切・コース資料を直接取得。ブラウザもスクレイパーもクリック作業も不要です。
@@ -270,4 +260,3 @@ issue と pull request を歓迎します。サーバーは 1 ファイルのみ
 ## ライセンス 📝
 
 MIT — [LICENSE](LICENSE) を参照。
-*（内容由AI生成，仅供参考）*
