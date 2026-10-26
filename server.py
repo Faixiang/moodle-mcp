@@ -32,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
 PROTOCOL_VERSION = "2024-11-05"
 SERVER_NAME = "moodle-mcp"
-SERVER_VERSION = "1.2.0"
+SERVER_VERSION = "1.3.0"
 
 
 def log(msg):
@@ -343,6 +343,71 @@ def submission_state(assign_id, cfg=None):
     return (status, sub.get("timemodified") or 0, graded)
 
 
+def quiz_report(cfg=None, courseids=None):
+    """Quiz attempt state per quiz: submitted / in_progress / not_attempted.
+
+    Unlike turnitintooltwo, quizzes do expose per-user attempts through
+    mod_quiz_get_user_attempts, so a quiz is no longer a blind spot: an empty
+    attempt list means never opened, a finished attempt means handed in.
+    """
+    courses = list_courses(cfg=cfg)
+    if courseids is None:
+        courseids = [c["id"] for c in courses["courses"]]
+    names = {c["id"]: (c["shortname"] or c["fullname"]) for c in courses["courses"]}
+    userid = courses.get("userid") or get_site_info(cfg=cfg).get("userid")
+    now = now_epoch()
+    rows = []
+    for cid in courseids:
+        try:
+            data = moodle_call("mod_quiz_get_quizzes_by_courses", {"courseids": [int(cid)]}, cfg=cfg)
+        except MoodleError as exc:
+            log("测验清单查询跳过课程 %s: %s" % (cid, exc))
+            continue
+        for q in (data.get("quizzes") or []):
+            qid = q.get("id")
+            row = {
+                "course": names.get(cid) or cid,
+                "course_id": cid,
+                "quiz_id": qid,
+                "name": q.get("name"),
+                "max_grade": q.get("grade"),
+                "opens_at": ts2s(q.get("timeopen")) if q.get("timeopen") else None,
+                "closes_at": ts2s(q.get("timeclose")) if q.get("timeclose") else None,
+                "time_limit_min": int((q.get("timelimit") or 0) // 60) or None,
+                "attempts_allowed": q.get("attempts"),
+            }
+            try:
+                att = moodle_call("mod_quiz_get_user_attempts",
+                                  {"quizid": qid, "userid": userid, "status": "all"}, cfg=cfg)
+            except MoodleError as exc:
+                row.update({"state": "unverifiable", "detail": str(exc)[:120],
+                            "attempts": None, "best_grade": None, "finished_at": None})
+                rows.append(row)
+                continue
+            attempts = att.get("attempts") or []
+            finished = [a for a in attempts if (a.get("state") or "") == "finished"]
+            running = [a for a in attempts if (a.get("state") or "") in ("inprogress", "overdue")]
+            if finished:
+                state = "submitted"
+            elif running:
+                state = "in_progress"
+            elif attempts:
+                state = "attempt_abandoned"
+            else:
+                state = "not_attempted"
+            best = max([a.get("sumgrades") or 0 for a in finished], default=None)
+            row.update({
+                "state": state,
+                "attempts": len(attempts),
+                "best_grade": best,
+                "finished_at": ts2s(max([a.get("timefinish") or 0 for a in finished], default=0)) if finished else None,
+            })
+            close_ts = q.get("timeclose") or 0
+            row["expired"] = bool(close_ts and close_ts < now and state != "submitted")
+            rows.append(row)
+    return rows
+
+
 def recent_updates(cfg=None, days=7, courseids=None):
     courses = list_courses(cfg=cfg)
     if courseids is None:
@@ -482,7 +547,7 @@ def render_digest(days=7, ahead_days=14, cfg=None):
     lines.append("- 未提交合计：%d（临期 %d，逾期 %d，其他 %d）" % (
         len(soon) + len(overdue) + len(openitems), len(soon), len(overdue), len(openitems)))
     lines.append("")
-    lines.append("> 局限：Turnitin(turnitintooltwo) 与 quiz 模块不在 mod_assign API 覆盖范围，需单独核对。")
+    lines.append("> 局限：Turnitin(turnitintooltwo) 不在标准 Web Service 覆盖范围，需单独核对；quiz 状态见 moodle_quiz_status。")
     return "\n".join(lines)
 
 
@@ -533,6 +598,17 @@ TOOLS = [
         },
     },
     {
+        "name": "moodle_quiz_status",
+        "description": "Per-quiz attempt state from mod_quiz_get_user_attempts: submitted / in_progress / not_attempted / attempt_abandoned, with best grade. Closes the quiz blind spot left by the assignment API.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "course_ids": {"type": "array", "items": {"type": "integer"}, "description": "Restrict to these course ids; omit for all courses"},
+                "only_pending": {"type": "boolean", "description": "Return only quizzes without a finished attempt (default false)", "default": False},
+            },
+        },
+    },
+    {
         "name": "moodle_course_files",
         "description": "Section structure and files of one course (filename, token-bearing download URL, modified time). Metadata only: nothing is downloaded.",
         "inputSchema": {
@@ -543,7 +619,7 @@ TOOLS = [
     },
     {
         "name": "moodle_download_week",
-        "description": "Download one week of a course into a local folder: creates a Week N subfolder, fetches that week's files plus assignment attachments, verifies sizes and skips files already present. Omit dest_root to list what would be downloaded.",
+        "description": "Download course files into a local folder: each section gets a Week N subfolder (unnumbered blocks keep their own title, e.g. Online Judge Questions), with assignment attachments included. Verifies sizes and skips files already present. Omit dest_root to list what would be downloaded.",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -600,6 +676,28 @@ def call_tool(name, args):
 
     if name == "moodle_weekly_digest":
         return render_digest(days=int(args.get("days", 7)), ahead_days=int(args.get("ahead_days", 14)), cfg=cfg)
+
+    if name == "moodle_quiz_status":
+        rows = quiz_report(cfg=cfg, courseids=args.get("course_ids"))
+        if args.get("only_pending"):
+            rows = [r for r in rows if r.get("state") != "submitted"]
+        if not rows:
+            return "无测验记录。"
+        lines = ["| 课程 | 测验 | 状态 | 开放窗口 | 尝试 | 最佳分 | 交卷时间 |", "|---|---|---|---|---|---|---|"]
+        label = {"submitted": "已交", "in_progress": "进行中", "not_attempted": "未开始",
+                 "attempt_abandoned": "尝试已放弃", "unverifiable": "不可判定"}
+        for r in rows:
+            score = "-" if r.get("best_grade") is None else "%s/%s" % (r["best_grade"], r.get("max_grade"))
+            state_txt = label.get(r["state"], r["state"])
+            if r.get("expired"):
+                state_txt += "（窗口已关闭）"
+            window = "%s ~ %s" % ((r.get("opens_at") or "?"), (r.get("closes_at") or "?"))
+            if r.get("time_limit_min"):
+                window += " · %d 分钟" % r["time_limit_min"]
+            lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (
+                r["course"], r["name"], state_txt, window,
+                "-" if r.get("attempts") is None else r["attempts"], score, r.get("finished_at") or "-"))
+        return "\n".join(lines)
 
     if name == "moodle_course_files":
         cid = int(args["course_id"])
