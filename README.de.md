@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_749379a1d14e11f18460525400393706
+    ReservedCode1: bqnlYVhC7jSnCUd8TKdbrzyeDa+qq3/x26deBI+p7G9pDgfP6UmCKcEtIbae+JUBgmX0vn7QHH9IIA+KeWWWpndsi629MW/Zj1xRbo8nfSKehUgI9UpcRY9O/OD55BnYhX/i+jwS1Ln0v9GWLqcsImuVs2UOLXEm2uoBfUcISP1tDzniWhy6v0dx798=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_749379a1d14e11f18460525400393706
+    ReservedCode2: bqnlYVhC7jSnCUd8TKdbrzyeDa+qq3/x26deBI+p7G9pDgfP6UmCKcEtIbae+JUBgmX0vn7QHH9IIA+KeWWWpndsi629MW/Zj1xRbo8nfSKehUgI9UpcRY9O/OD55BnYhX/i+jwS1Ln0v9GWLqcsImuVs2UOLXEm2uoBfUcISP1tDzniWhy6v0dx798=
+---
+
 # moodle-mcp
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Français](README.fr.md) · **Deutsch** · [Português](README.pt-BR.md) · [Русский](README.ru.md)
@@ -131,3 +142,4 @@ Abgegeben/bewertet: 51 ｜ Offen gesamt: 25 (bald fällig 4, überfällig 14, so
 ## Lizenz
 
 MIT — siehe [LICENSE](LICENSE).
+*（内容由AI生成，仅供参考）*

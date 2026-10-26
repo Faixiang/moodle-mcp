@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_6ec27cc5d14e11f18460525400393706
+    ReservedCode1: 90bvCjfpVbcMI+76NWhZIoTdjRJXL/rgP3FUNbrPN9IbLuxvXByznZHDTchNYC0AP3sf/I9RWRkqtVGWNC718xkZzU91s1PJXwRhBSY6rjCntPZmH8YR+71PE+UhZTgMlYHPRrKSamJBdZ/ApzeiaV6UsggIRjTFbJj21wchFFXTk5NgV622NB2c27Q=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_6ec27cc5d14e11f18460525400393706
+    ReservedCode2: 90bvCjfpVbcMI+76NWhZIoTdjRJXL/rgP3FUNbrPN9IbLuxvXByznZHDTchNYC0AP3sf/I9RWRkqtVGWNC718xkZzU91s1PJXwRhBSY6rjCntPZmH8YR+71PE+UhZTgMlYHPRrKSamJBdZ/ApzeiaV6UsggIRjTFbJj21wchFFXTk5NgV622NB2c27Q=
+---
+
 # moodle-mcp
 
 [English](README.md) · [简体中文](README.zh-CN.md) · **繁體中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md)
@@ -131,3 +142,4 @@ Agent 呼叫 `moodle_weekly_digest`，即得一份可讀簡報：
 ## 授權
 
 MIT —— 見 [LICENSE](LICENSE)。
+*（内容由AI生成，仅供参考）*

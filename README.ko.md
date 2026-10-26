@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_70da5a89d14e11f196c5525400248c00
+    ReservedCode1: vlCzcQS8GHkvJCg6Q4zclVQD3rp287wPQV58vYp4pQyzbAbh3QrUJeR9Zu/8yc0RgpqI7hDNNhg9U3DiX8HNO/s6Dmq5PMGuS80FcPRgl5pTF6yyD9Mu0hKC6OpXcX5BuND4LaP5elpGZ+485+8IaDzXZJ9/vUG3qA6+LloN3F2lsw2SpvAd2Gse6VM=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_70da5a89d14e11f196c5525400248c00
+    ReservedCode2: vlCzcQS8GHkvJCg6Q4zclVQD3rp287wPQV58vYp4pQyzbAbh3QrUJeR9Zu/8yc0RgpqI7hDNNhg9U3DiX8HNO/s6Dmq5PMGuS80FcPRgl5pTF6yyD9Mu0hKC6OpXcX5BuND4LaP5elpGZ+485+8IaDzXZJ9/vUG3qA6+LloN3F2lsw2SpvAd2Gse6VM=
+---
+
 # moodle-mcp
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · **한국어** · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md)
@@ -131,3 +142,4 @@ Claude Desktop / Cursor (`mcp.json`):
 ## 라이선스
 
 MIT — [LICENSE](LICENSE) 참고.
+*（内容由AI生成，仅供参考）*

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560" role="img" aria-label="Example MCP session: agent asks what is due this week and receives a Moodle digest">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1420"/>
+      <stop offset="100%" stop-color="#0a0f18"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="920" height="560" rx="14" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="919" height="559" rx="14" fill="none" stroke="#243043"/>
+
+  <!-- titlebar -->
+  <rect width="920" height="44" rx="14" fill="#141c2b"/>
+  <rect y="30" width="920" height="14" fill="#141c2b"/>
+  <circle cx="26" cy="22" r="6" fill="#ff5f57"/>
+  <circle cx="48" cy="22" r="6" fill="#febc2e"/>
+  <circle cx="70" cy="22" r="6" fill="#28c840"/>
+  <text x="96" y="27" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#7b8ba3">moodle-mcp — MCP session</text>
+
+  <!-- user bubble -->
+  <rect x="60" y="76" width="470" height="46" rx="10" fill="#1d2839"/>
+  <text x="80" y="105" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#e6edf7">What do I still owe this week?</text>
+
+  <!-- tool call -->
+  <text x="60" y="156" font-family="Consolas, Menlo, monospace" font-size="14" fill="#f98012">→ moodle_weekly_digest</text>
+  <text x="60" y="176" font-family="Consolas, Menlo, monospace" font-size="14" fill="#6b7f9c">{ "days": 7, "ahead_days": 14 }</text>
+
+  <!-- response card -->
+  <rect x="60" y="196" width="800" height="300" rx="10" fill="#111a27" stroke="#243043"/>
+  <text x="82" y="226" font-family="Consolas, Menlo, monospace" font-size="13" fill="#4b9e6f">## Due in the next 7 days, not submitted</text>
+
+  <text x="82" y="254" font-family="Consolas, Menlo, monospace" font-size="13" fill="#8ea3bd">| Course                  | Item             | Deadline            | Left   |</text>
+  <text x="82" y="276" font-family="Consolas, Menlo, monospace" font-size="13" fill="#c9d6e8">| CIS225 Data Structures  | A10021 Crosswords| 2026-10-29 23:59    | 3 days |</text>
+  <text x="82" y="298" font-family="Consolas, Menlo, monospace" font-size="13" fill="#c9d6e8">| CIS225 Data Structures  | A10022 Cow Jogging| 2026-10-29 23:59   | 3 days |</text>
+  <text x="82" y="320" font-family="Consolas, Menlo, monospace" font-size="13" fill="#c9d6e8">| ENG103 Academic Writing| A10031 Reflection | 2026-11-02 23:59    | 7 days |</text>
+
+  <text x="82" y="356" font-family="Consolas, Menlo, monospace" font-size="13" fill="#d9534f">## Overdue</text>
+  <text x="82" y="382" font-family="Consolas, Menlo, monospace" font-size="13" fill="#8ea3bd">| Course                  | Item             | Deadline            | Late   |</text>
+  <text x="82" y="404" font-family="Consolas, Menlo, monospace" font-size="13" fill="#c9d6e8">| CIS225 Data Structures  | A10009 Dancing   | 2026-10-11 23:59    | 15 days|</text>
+
+  <text x="82" y="440" font-family="Consolas, Menlo, monospace" font-size="13" fill="#f98012">## Totals</text>
+  <text x="82" y="462" font-family="Consolas, Menlo, monospace" font-size="13" fill="#c9d6e8">submitted/graded 51 | outstanding 25 (due soon 4, overdue 14, other 7)</text>
+
+  <text x="60" y="530" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#55647d">read-only by design — the server can never submit, enrol, edit or delete</text>
+</svg>
