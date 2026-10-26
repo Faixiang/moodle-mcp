@@ -1,0 +1,3 @@
+[submodule "skill/moodle-course-watch"]
+	path = skill/moodle-course-watch
+	url = https://github.com/Faixiang/moodle-course-watch.git

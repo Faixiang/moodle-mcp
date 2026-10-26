@@ -32,7 +32,7 @@
 
 > **配套 Skill —— [moodle-course-watch](https://github.com/Faixiang/moodle-course-watch)**
 > 本 server 提供管線，skill 提供其上的工作流程：偵測新發布課業、鏡像缺漏週次資料夾、列出未提交活動、對下載的檔案進行
-> 專業講述並劃分重點等級。它隨本倉庫一起分發，位於 [`skill/moodle-course-watch/`](skill/moodle-course-watch/)，
+> 專業講述並劃分重點等級。它以 git submodule 形式掛在 [`skill/moodle-course-watch/`](skill/moodle-course-watch/)（複製時需加 `--recurse-submodules`），
 > 也有獨立倉庫供只想裝 skill 的人單獨複製。
 
 ## 介面預覽 🖥️
