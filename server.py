@@ -3,14 +3,14 @@
 """
 Moodle MCP Server (zero-dependency, stdio JSON-RPC 2.0)
 
-用途：把 Moodle Web Service REST API 包成 MCP 工具，供 Agent 直接调用，
-      无需启动浏览器。
+Wraps the Moodle Web Service REST API as MCP tools, so an agent can read
+courses, deadlines and course files without launching a browser.
 
-配置：同目录 config.json
-      {"url": "https://moodle.sfu.edu.hk", "token": "<wstoken>"}
-      或用环境变量 MOODLE_URL / MOODLE_TOKEN 覆盖。
+Config: config.json next to this file
+        {"url": "https://moodle.sfu.edu.hk", "token": "<wstoken>"}
+        The MOODLE_URL / MOODLE_TOKEN environment variables override it.
 
-注意：stdout 只输出 JSON-RPC 帧，所有日志写 stderr。
+Note: stdout carries JSON-RPC frames only; every log line goes to stderr.
 """
 
 import sys
@@ -44,7 +44,7 @@ class MoodleError(Exception):
     pass
 
 
-# ---------------------------------------------------------------- 配置
+# ---------------------------------------------------------------- Config
 
 def load_config():
     cfg = {
@@ -132,10 +132,10 @@ def moodle_call(function, params=None, cfg=None):
     return data
 
 
-# ---------------------------------------------------------------- 链接与周次
+# ---------------------------------------------------------------- Links and weeks
 
 def with_token(url, cfg=None):
-    """给 pluginfile 链接补上 token，使其可被脚本直接下载。"""
+    """Append the token to a pluginfile URL so a script can fetch it directly."""
     if not url:
         return url
     if "token=" in url:
@@ -149,7 +149,7 @@ def with_token(url, cfg=None):
 
 
 def normalize_week(value):
-    """把 6 / '6' / 'Week 6' 归一为整数；all/全部 返回 'all'。"""
+    """Coerce 6 / '6' / 'Week 6' to an int; the all keyword stays 'all'."""
     if value is None:
         return None
     s = str(value).strip().lower()
@@ -160,7 +160,7 @@ def normalize_week(value):
 
 
 def section_week(name, index):
-    """从章节名解析周次，解析不到则用章节序号。"""
+    """Read the week number from a section name, falling back to its index."""
     m = re.search(r"week\s*0*(\d+)", str(name or ""), re.I)
     if m:
         return int(m.group(1))
@@ -168,7 +168,7 @@ def section_week(name, index):
 
 
 def assign_attachments(course_id, cfg=None):
-    """取作业模块的介绍附件（Assignment N 的题目文件），返回 {assign_id: [file...]}。"""
+    """Assignment brief attachments keyed by assign id: {assign_id: [file...]}."""
     try:
         raw = moodle_call("mod_assign_get_assignments", {"courseids": [int(course_id)]}, cfg=cfg)
     except MoodleError as exc:
@@ -197,7 +197,7 @@ def assign_attachments(course_id, cfg=None):
 
 
 def week_manifest(course_id, week, cfg=None):
-    """收集指定周（或全部）可下载文件。"""
+    """Collect the downloadable files of one week, or of every week."""
     cid = int(course_id)
     data = moodle_call("core_course_get_contents", {"courseid": cid}, cfg=cfg)
     att = assign_attachments(cid, cfg=cfg)
@@ -230,7 +230,7 @@ def week_manifest(course_id, week, cfg=None):
 
 
 def fetch_to_file(url, dest):
-    """下载到 dest，返回 (字节数, content_type)。"""
+    """Download to dest and return (bytes written, content_type)."""
     req = urllib.request.Request(url, headers={"User-Agent": "MoodleMCP/1.1"})
     tmp = dest + ".part"
     with urllib.request.urlopen(req, timeout=180, context=ssl.create_default_context()) as resp:
@@ -249,7 +249,7 @@ def fetch_to_file(url, dest):
     return os.path.getsize(dest), ctype
 
 
-# ---------------------------------------------------------------- 工具函数
+# ---------------------------------------------------------------- Tool functions
 
 def ts2s(epoch):
     if not epoch:
@@ -307,7 +307,7 @@ def collect_assignments(cfg=None, courseids=None):
 
 
 def submission_state(assign_id, cfg=None):
-    """返回 (status, timemodified, graded)。status: submitted / draft / new"""
+    """Return (status, timemodified, graded); status is submitted / draft / new."""
     try:
         st = moodle_call("mod_assign_get_submission_status", {"assignid": assign_id}, cfg=cfg)
     except MoodleError as exc:
@@ -378,7 +378,7 @@ def pending_report(cfg=None, ahead_days=14, courseids=None):
     return items
 
 
-# ---------------------------------------------------------------- 渲染
+# ---------------------------------------------------------------- Rendering
 
 def render_digest(days=7, ahead_days=14, cfg=None):
     lines = []
@@ -394,7 +394,7 @@ def render_digest(days=7, ahead_days=14, cfg=None):
     lines.append("- 课程数：%d" % len(cids))
     lines.append("")
 
-    # 1. 新增
+    # 1. Recent additions
     lines.append("## 一、近 %d 天新增内容" % days)
     lines.append("")
     try:
@@ -413,7 +413,7 @@ def render_digest(days=7, ahead_days=14, cfg=None):
         lines.append("> 无新增（或站点未开放 core_course_get_updates_since 权限）。")
     lines.append("")
 
-    # 2/3. 作业
+    # 2/3. Assignments
     items = pending_report(cfg=cfg, ahead_days=ahead_days, courseids=cids)
 
     soon = [i for i in items if i["bucket"] == "due_soon"]
@@ -462,71 +462,71 @@ def render_digest(days=7, ahead_days=14, cfg=None):
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------------- 工具定义
+# ---------------------------------------------------------------- Tool definitions
 
 TOOLS = [
     {
         "name": "moodle_site_info",
-        "description": "校验 Moodle Token 并返回站点信息与当前账号可用的 Web Service 函数清单（用于诊断权限）。",
+        "description": "Validate the Moodle token and return site name, version, current user and the web-service functions the account may call (diagnostics).",
         "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
     },
     {
         "name": "moodle_list_courses",
-        "description": "列出当前账号已选的全部课程（课程ID、简称、全称）。",
+        "description": "List every course the account is enrolled in (id, shortname, fullname).",
         "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
     },
     {
         "name": "moodle_recent_updates",
-        "description": "列出最近 N 天内课程新增/更新的内容（作业、资源、公告等），按时间倒序。",
+        "description": "Content added or updated in the last N days (assignments, resources, announcements), newest first.",
         "inputSchema": {
             "type": "object",
             "properties": {
-                "days": {"type": "integer", "description": "回溯天数，默认 7", "default": 7},
-                "course_ids": {"type": "array", "items": {"type": "integer"}, "description": "限定课程ID，省略则全部"},
+                "days": {"type": "integer", "description": "How many days to look back (default 7)", "default": 7},
+                "course_ids": {"type": "array", "items": {"type": "integer"}, "description": "Restrict to these course ids; omit for all courses"},
             },
         },
     },
     {
         "name": "moodle_pending_assignments",
-        "description": "列出未提交作业并按临期/逾期/无压力分类，含截止时间与剩余天数。",
+        "description": "Unsubmitted assignments split into due soon / overdue / no pressure, with deadline and days remaining.",
         "inputSchema": {
             "type": "object",
             "properties": {
-                "ahead_days": {"type": "integer", "description": "临期判定窗口天数，默认 14", "default": 14},
-                "course_ids": {"type": "array", "items": {"type": "integer"}, "description": "限定课程ID，省略则全部"},
+                "ahead_days": {"type": "integer", "description": "Due-soon window in days (default 14)", "default": 14},
+                "course_ids": {"type": "array", "items": {"type": "integer"}, "description": "Restrict to these course ids; omit for all courses"},
             },
         },
     },
     {
         "name": "moodle_weekly_digest",
-        "description": "一次性生成课业简报：近 N 天新增 + 临期未交 + 逾期未交 + 统计。这是最常用的汇总工具。",
+        "description": "One-shot brief: recent additions + due soon + overdue + counts. Best starting point.",
         "inputSchema": {
             "type": "object",
             "properties": {
-                "days": {"type": "integer", "description": "新增回溯天数，默认 7", "default": 7},
-                "ahead_days": {"type": "integer", "description": "临期窗口天数，默认 14", "default": 14},
+                "days": {"type": "integer", "description": "How many days of additions to look back (default 7)", "default": 7},
+                "ahead_days": {"type": "integer", "description": "Due-soon window in days (default 14)", "default": 14},
             },
         },
     },
     {
         "name": "moodle_course_files",
-        "description": "列出指定课程的章节结构与课件文件（文件名、带 token 的可下载直链、修改时间），不下载文件。",
+        "description": "Section structure and files of one course (filename, token-bearing download URL, modified time). Metadata only: nothing is downloaded.",
         "inputSchema": {
             "type": "object",
-            "properties": {"course_id": {"type": "integer", "description": "课程ID"}},
+            "properties": {"course_id": {"type": "integer", "description": "Course id"}},
             "required": ["course_id"],
         },
     },
     {
         "name": "moodle_download_week",
-        "description": "按周把课程文件下载到本地目录：自动建「Week N」子文件夹、下载该周全部课件与作业附件、按大小校验并跳过已存在文件。省略 dest_root 时只返回待下载清单。",
+        "description": "Download one week of a course into a local folder: creates a Week N subfolder, fetches that week's files plus assignment attachments, verifies sizes and skips files already present. Omit dest_root to list what would be downloaded.",
         "inputSchema": {
             "type": "object",
             "properties": {
-                "course_id": {"type": "integer", "description": "课程ID"},
-                "week": {"type": ["integer", "string"], "description": "周次，如 6 或 \"Week 6\"；填 all 表示全部周次"},
-                "dest_root": {"type": "string", "description": "本地根目录，例如 U:\\OneDrive\\...\\CIS221 Calculus；省略则仅列举"},
-                "overwrite": {"type": "boolean", "description": "保留字段，默认不覆盖同名同大小文件"},
+                "course_id": {"type": "integer", "description": "Course id"},
+                "week": {"type": ["integer", "string"], "description": "Week number, e.g. 6 or \"Week 6\"; use all for every week"},
+                "dest_root": {"type": "string", "description": "Local root folder, e.g. U:\\OneDrive\\...\\CIS221 Calculus; omit to list only"},
+                "overwrite": {"type": "boolean", "description": "Reserved; files of identical size are skipped by default"},
             },
             "required": ["course_id", "week"],
         },

@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Moodle Token 获取助手（在终端手动运行，密码不经过任何 AI 对话）
+Moodle token helper. Run it in a terminal yourself: the password never
+passes through any AI conversation.
 
-用法：
-    双击同目录 run_get_token.bat
-    或： python get_token.py
+Usage:
+    double-click run_get_token.bat in the same folder
+    or: python get_token.py
 
-所有过程写入同目录 get_token.log（不含密码），便于排查。
+Everything is written to get_token.log in the same folder (passwords are not
+recorded), so a failed run can be diagnosed afterwards.
 
-流程：
-    1. 输入站点地址（例如 https://moodle.your-school.edu）
-    2. 输入用户名 / 密码（getpass 不回显）
-    3. 调用 /login/token.php 换取 wstoken
-    4. 成功则写入同目录 config.json，并立即用 core_webservice_get_site_info 验证
+Flow:
+    1. enter the site URL (default https://moodle.sfu.edu.hk)
+    2. enter username / password (getpass, nothing echoed)
+    3. call /login/token.php to exchange them for a wstoken
+    4. on success write config.json, then verify with core_webservice_get_site_info
 """
 
 import os
@@ -97,10 +99,7 @@ def main():
     log("工作目录: %s" % HERE)
 
     try:
-        base = input("站点地址 (如 https://moodle.your-school.edu): ").strip()
-        if not base:
-            log("[x] 站点地址不能为空，退出。")
-            return
+        base = input("站点地址 [https://moodle.sfu.edu.hk]: ").strip() or "https://moodle.sfu.edu.hk"
         username = input("用户名（学号或邮箱）: ").strip()
         password = getpass.getpass("密码（输入时不显示）: ")
     except (EOFError, KeyboardInterrupt):
