@@ -1,0 +1,6 @@
+﻿# 凭证文件，禁止提交
+config.json
+get_token.log
+__pycache__/
+*.pyc
+.venv/
