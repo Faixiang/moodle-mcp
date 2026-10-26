@@ -29,6 +29,11 @@ Aufgaben, Fristen und Kursdateien direkt über die Moodle-Web-Service-API lesen.
 </p>
 
 </div>
+> **Companion skill — [moodle-course-watch](https://github.com/Faixiang/moodle-course-watch)**
+> This server is the plumbing; the skill is the workflow on top of it: new coursework diffing, missing week folders,
+> unsubmitted activity list, and a graded walkthrough of downloaded files. Vendored here at
+> [`skill/moodle-course-watch/`](skill/moodle-course-watch/), also published standalone.
+
 
 ## Vorschau 🖥️
 

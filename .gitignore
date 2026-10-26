@@ -4,3 +4,7 @@ get_token.log
 __pycache__/
 *.pyc
 .venv/
+
+# skill: 用户站点配置与 token 不提交
+skill/moodle-course-watch/site-profile.md
+

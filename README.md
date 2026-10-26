@@ -30,6 +30,12 @@ Read assignments, deadlines and course files straight out of the Moodle Web Serv
 
 </div>
 
+> **Companion skill — [moodle-course-watch](https://github.com/Faixiang/moodle-course-watch)**
+> This server is the plumbing; the skill is the workflow on top of it. It diffs new coursework, mirrors missing week
+> folders, lists what is still unsubmitted, and walks through the downloaded files with graded key points. It ships in
+> this repository at [`skill/moodle-course-watch/`](skill/moodle-course-watch/) and as a standalone repo for anyone who
+> wants only the skill.
+
 ## Preview 🖥️
 
 <img src="docs/preview.svg" alt="Example MCP session" width="100%">

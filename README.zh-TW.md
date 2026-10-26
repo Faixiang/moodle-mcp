@@ -30,6 +30,11 @@
 
 </div>
 
+> **配套 Skill —— [moodle-course-watch](https://github.com/Faixiang/moodle-course-watch)**
+> 本 server 提供管線，skill 提供其上的工作流程：偵測新發布課業、鏡像缺漏週次資料夾、列出未提交活動、對下載的檔案進行
+> 專業講述並劃分重點等級。它隨本倉庫一起分發，位於 [`skill/moodle-course-watch/`](skill/moodle-course-watch/)，
+> 也有獨立倉庫供只想裝 skill 的人單獨複製。
+
 ## 介面預覽 🖥️
 
 <img src="docs/preview.svg" alt="MCP 工作階段示例" width="100%">
