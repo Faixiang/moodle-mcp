@@ -1,63 +1,107 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_75631943d14e11f196c5525400248c00
-    ReservedCode1: SusgwXcnRuKwM0GqZT9eJmCZKSW+0ndxc7uE8if8mK3kkfTHIhPAY3fc+h/XXnmVrzxu+eqEJpKm8PAmQH8z99lzLsraG8j5RoKFqG7dnOaPGEl56+DefqTG+1++/BQwZCiN1un7JYM1QE7t7QmDhBQilJhLYe94wJfe3LURwehAJO66guxi01gpzNI=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_75631943d14e11f196c5525400248c00
-    ReservedCode2: SusgwXcnRuKwM0GqZT9eJmCZKSW+0ndxc7uE8if8mK3kkfTHIhPAY3fc+h/XXnmVrzxu+eqEJpKm8PAmQH8z99lzLsraG8j5RoKFqG7dnOaPGEl56+DefqTG+1++/BQwZCiN1un7JYM1QE7t7QmDhBQilJhLYe94wJfe3LURwehAJO66guxi01gpzNI=
----
+<div align="center">
+
+<img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
 # moodle-mcp
 
-[English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · **Português (BR)** · [Русский](README.ru.md)
+### O Moodle que agentes de IA realmente conseguem usar
 
-Um servidor MCP (Model Context Protocol) que expõe a **API Web Service do Moodle** como ferramentas que um agente de IA pode chamar diretamente. Sem navegador, sem scraper, sem clicar em páginas.
+Leia tarefas, prazos e arquivos do curso direto da Web Service API do Moodle. Sem navegador, sem scraper, sem cliques.
 
-O Moodle sustenta as plataformas de ensino de incontáveis instituições pelo mundo, mas não existia um servidor MCP genérico para ele. Este projeto preenche essa lacuna: arquivo único, zero dependências, seis ferramentas, compatível com qualquer site Moodle 3.x/4.x com Web Services habilitados.
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="MIT License"></a>
+<img src="https://img.shields.io/badge/python-3.8%2B-3772FF?logo=python&logoColor=white" alt="Python 3.8+">
+<img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
+<img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
+<img src="https://img.shields.io/badge/dependencies-0-success" alt="Zero dependências">
+<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
 
-> Sem pacote pip, sem node, sem navegador. Apenas `python server.py`.
+<p>
+<a href="README.md">English</a> ·
+<a href="README.zh-CN.md">简体中文</a> ·
+<a href="README.zh-TW.md">繁體中文</a> ·
+<a href="README.ja.md">日本語</a> ·
+<a href="README.ko.md">한국어</a> ·
+<a href="README.es.md">Español</a> ·
+<a href="README.fr.md">Français</a> ·
+<a href="README.de.md">Deutsch</a> ·
+<b>Português</b> ·
+<a href="README.ru.md">Русский</a>
+</p>
 
-## Por que ele existe
+</div>
 
-Um agente consegue ler o plano de ensino e dizer o que vence amanhã, mas a maior parte do conteúdo do curso fica atrás de um login. Raspar o Moodle com navegador headless é lento, frágil e costuma esbarrar no WAF. O Moodle já tem uma API REST estável e documentada; faltava apenas a camada MCP.
+## Prévia 🖥️
 
-Este servidor usa somente a biblioteca padrão do Python (`urllib`, `json`, `ssl`) e fala JSON-RPC 2.0 sobre stdio, conectando-se direto ao Claude Desktop, Cursor, Marvis ou qualquer cliente compatível com MCP.
+<img src="docs/preview.svg" alt="Exemplo de sessão MCP" width="100%">
 
-## Ferramentas
+---
 
-| Ferramenta | O que faz | Parâmetros |
+## Por que existe 🎯
+
+O Moodle sustenta as plataformas de ensino de universidades no mundo todo, mas nunca teve um servidor MCP genérico. Raspar com navegador headless é lento, frágil e costuma esbarrar no WAF; já o Moodle oferece uma API REST estável e documentada.
+
+Este projeto é a camada que faltava: **um arquivo Python sem dependências, seis ferramentas somente leitura**, válido para qualquer Moodle 3.x/4.x com Web Services ativados.
+
+```text
+Sem pip install. Sem node. Sem navegador. Só python server.py.
+```
+
+## Recursos ✨
+
+### Obtenção de dados
+- **Prazos legíveis** — as tarefas são classificadas em «a vencer», «atrasadas» e «sem pressa», com os dias restantes já calculados
+- **Resumo semanal** — novidades + a vencer + atrasadas em uma chamada, já formatado para leitura
+- **Arquivos do curso** — estrutura de seções e lista de arquivos, com links diretos e data de modificação; apenas metadados, sem baixar nada
+- **Diagnóstico embutido** — `moodle_site_info` informa a versão do site, a identidade da conta e as funções que o token realmente pode chamar
+
+### Implementação
+- **Zero dependências** — só biblioteca padrão do Python (`urllib`, `json`, `ssl`)
+- **Arquivo único** — copie `server.py` para qualquer lugar; sem estrutura de pacote, sem etapa de build
+- **stdio JSON-RPC 2.0** — conecta direto no Claude Desktop, Cursor, Marvis ou qualquer cliente compatível com MCP
+- **Amigável ao WAF** — requisições serializadas com 150 ms de intervalo, porque insistir no Moodle só devolve `502`
+- **Somente leitura por projeto** — não existe código para enviar, matricular, editar ou excluir
+
+## Ferramentas 🧰
+
+| Ferramenta | Função | Parâmetros |
 |---|---|---|
-| `moodle_site_info` | Valida o token e retorna nome do site, versão do Moodle, usuário atual e a lista de funções liberadas para a conta (diagnóstico). | — |
+| `moodle_site_info` | Valida o token e devolve nome do site, versão do Moodle, usuário atual e funções disponíveis para a conta (diagnóstico). | — |
 | `moodle_list_courses` | Lista todos os cursos matriculados com ID, nome curto e nome completo. | — |
-| `moodle_recent_updates` | Conteúdo adicionado ou atualizado nos últimos N dias (tarefas, arquivos, avisos), do mais recente para o mais antigo. | `days` (padrão 7), `course_ids` |
-| `moodle_pending_assignments` | Tarefas não entregues, classificadas em **a vencer** / **atrasadas** / **sem pressão**, com prazo e dias restantes. | `ahead_days` (padrão 14), `course_ids` |
-| `moodle_course_files` | Estrutura de seções e lista de arquivos de um curso, com link direto de download e data de modificação. **Retorna apenas metadados, não baixa arquivo algum.** | `course_id` |
-| `moodle_weekly_digest` | Resumo completo: novidades recentes + a vencer + atrasadas + estatísticas. Recomendado como ponto de partida. | `days` (padrão 7), `ahead_days` (padrão 14) |
+| `moodle_recent_updates` | Conteúdo novo ou alterado nos últimos N dias (tarefas, arquivos, avisos), do mais recente ao mais antigo. | `days` (padrão 7), `course_ids` |
+| `moodle_pending_assignments` | Tarefas não enviadas, classificadas em **a vencer** / **atrasadas** / **sem pressa**, com prazo e dias restantes. | `ahead_days` (padrão 14), `course_ids` |
+| `moodle_course_files` | Estrutura de seções e arquivos de um curso, com links de download e data de modificação. **Apenas metadados: não baixa nada.** | `course_id` |
+| `moodle_weekly_digest` | Resumo completo em uma chamada: novidades + a vencer + atrasadas + estatísticas. Ponto de partida recomendado. | `days` (padrão 7), `ahead_days` (padrão 14) |
 
-Todas as ferramentas são **somente leitura**. Não há, por decisão de projeto, interfaces de envio, matrícula, exclusão ou edição.
+## Requisitos 📦
 
-## Instalação
+| Item | Detalhe |
+|---|---|
+| Python | 3.8+ (somente biblioteca padrão) |
+| Protocolo MCP | `2024-11-05` |
+| Moodle | 3.x / 4.x com Web Services e protocolo REST ativos |
+| Conta | Com permissão `webservice/rest:use` |
+| Ambiente testado | Moodle 4.3.6, conta com 435 funções atribuídas (permissões completas) |
 
-### 1. Obter o token
+## Início rápido 🚀
 
-O Moodle exige um token de acesso pessoal. Escolha conforme o seu site:
+### ① Obter um token
 
-**A. Interface web (recomendado, funciona também com contas SSO)**
+O Moodle exige uma chave de acesso pessoal. Escolha conforme o seu site:
 
-1. Faça login no seu site Moodle
-2. Avatar → *Preferências* → *Conta* → *Segurança* → *Gerenciar chaves de acesso*
-3. Clique em «Criar», use `moodle-mcp` como nome e escolha o serviço *Moodle mobile web service*
+**A. Interface web (recomendado, funciona também com SSO)**
+
+1. Entre no seu Moodle
+2. Foto do perfil → *Preferências* → *Conta* → *Segurança* → *Gerenciar chaves de acesso*
+3. Clique em «Criar», nome `moodle-mcp`, serviço *Moodle mobile web service*
 4. Copie a chave gerada
 
-**B. Script pelo serviço mobile (apenas se o site mantiver senha local)**
+**B. Por script usando o serviço móvel (só se o site mantiver senha local)**
 
 ```bash
 python get_token.py
 ```
 
-O script troca as credenciais por um token via `/login/token.php` e o serviço `moodle_mobile_app`, validando em seguida. A senha não é exibida nem gravada em log. Contas somente SSO recebem `invalidlogin`; nesse caso use a opção A.
+O script troca credenciais em `/login/token.php` com o serviço `moodle_mobile_app` e valida o token na hora. A senha não é exibida nem registrada. Em contas apenas SSO ele retorna `invalidlogin`: use a opção A.
 
 **C. Variáveis de ambiente**
 
@@ -66,9 +110,9 @@ MOODLE_URL=https://moodle.your-school.edu
 MOODLE_TOKEN=your_token_here
 ```
 
-### 2. Configuração
+### ② Configurar
 
-Crie `config.json` no mesmo diretório de `server.py`:
+Crie `config.json` ao lado de `server.py` (pode copiar `config.example.json`):
 
 ```json
 {
@@ -77,9 +121,9 @@ Crie `config.json` no mesmo diretório de `server.py`:
 }
 ```
 
-Variáveis de ambiente têm prioridade sobre o arquivo de configuração.
+Variáveis de ambiente têm prioridade sobre o arquivo.
 
-### 3. Registrar o servidor
+### ③ Registrar o servidor
 
 Claude Desktop / Cursor (`mcp.json`):
 
@@ -94,52 +138,125 @@ Claude Desktop / Cursor (`mcp.json`):
 }
 ```
 
-Em `args`, use o caminho absoluto de `server.py`. Com várias versões de Python instaladas, aponte `command` para o caminho completo do interpretador.
+Use o caminho absoluto de `server.py` em `args`. Havendo várias versões de Python, aponte `command` para o interpretador completo.
 
-## Exemplo
+### ④ Verificar
 
-> «O que ainda tenho para entregar esta semana?»
+Peça ao cliente para chamar `moodle_site_info`. Com a configuração correta virão o nome do site, a versão do Moodle e seus dados de usuário. Se falhar, veja «Perguntas frequentes».
 
-O agente chama `moodle_weekly_digest` e recebe um resumo pronto para leitura:
+## Referência de configuração ⚙️
 
-```
-## Vencem nos próximos 7 dias, não entregues
-| Curso | Tarefa | Prazo | Restante |
-| CIS225 Data Structures | A10021 Crosswords | 2026-10-29 23:59 | 3 dias |
+| Chave | Tipo | Obrigatório | Descrição |
+|---|---|---|---|
+| `url` / `MOODLE_URL` | string | Sim | URL raiz do site, sem caminho no final |
+| `token` / `MOODLE_TOKEN` | string | Sim | Token pessoal gerado em «Gerenciar chaves de acesso» |
+| `config.json` | arquivo | Opcional | Lido do diretório de `server.py` |
+
+Prioridade: variáveis de ambiente → `config.json` → erro.
+
+## Exemplos de uso 💬
+
+> «O que ainda falta entregar esta semana?»
+
+O agente chama `moodle_weekly_digest` e devolve um resumo pronto para ler:
+
+```text
+## Vence em 7 dias e não enviado
+| CIS225 Data Structures | A10021 Crosswords  | 2026-10-29 23:59 | 3 dias |
 | CIS225 Data Structures | A10022 Cow Jogging | 2026-10-29 23:59 | 3 dias |
 
 ## Atrasadas
 | CIS225 Data Structures | A10009 Dancing | 2026-10-11 23:59 | 15 dias de atraso |
 
 ## Estatísticas
-Entregues/corrigidas: 51 ｜ Não entregues: 25 (a vencer 4, atrasadas 14, outras 7)
+Enviadas/corrigidas: 51 ｜ Pendentes: 25 (a vencer 4, atrasadas 14, outras 7)
 ```
 
-## Limitações conhecidas
+Outros comandos úteis:
 
-- **Turnitin (`turnitintooltwo`) e o módulo `quiz` não são cobertos.** São módulos independentes, sem a semântica de `mod_assign`; os prazos devem ser conferidos na web.
-- Tarefas sem prazo definido aparecem como «não definido».
-- O resumo semanal conta apenas itens **não entregues**; entregues sem correção entram nas estatísticas, mas não nas tabelas.
-- Alguns WAFs devolvem `502` para requisições consecutivas. O servidor já serializa as chamadas com 150 ms de intervalo; se ainda ocorrer, tente novamente com intervalo maior.
-- O site precisa ter Web Services ativos e a conta a permissão `webservice/rest:use`. A maioria libera a lista completa de funções; alguns apenas o subconjunto mobile.
+| Você diz | Ferramenta chamada |
+|---|---|
+| «O que há de novo em CIS225 esta semana?» | `moodle_recent_updates` |
+| «Liste os arquivos de GER405, sem baixar» | `moodle_course_files` |
+| «Quais cursos não têm nada atrasado?» | `moodle_pending_assignments` |
+| «Meu token ainda é válido?» | `moodle_site_info` |
 
-## Segurança
+## Perguntas frequentes 🤔
 
-- O token é uma **credencial**. Guarde apenas em `config.json` ou variáveis de ambiente e nunca o envie ao repositório; o `.gitignore` já exclui `config.json` e `get_token.log`.
-- `get_token.py` não registra a senha, apenas o comprimento, e a lê com `getpass`.
-- Todas as ferramentas são somente leitura: mesmo com o token vazado, não é possível alterar ou apagar tarefas por este servidor. Se vazar, revogue em «Gerenciar chaves de acesso».
+<details>
+<summary><b>get_token.py retorna <code>invalidlogin</code></b></summary>
+
+Sua conta funciona apenas com SSO/OIDC e `/login/token.php` não tem senha local para validar. Use a opção A e crie o token em «Gerenciar chaves de acesso».
+</details>
+
+<details>
+<summary><b>A chamada retorna <code>502</code> ou a conexão cai</b></summary>
+
+É o limite de taxa do WAF do site. Este servidor já serializa as requisições com 150 ms de intervalo; se ainda ocorrer, espere alguns minutos e evite chamar várias ferramentas em paralelo.
+</details>
+
+<details>
+<summary><b>A ferramenta retorna lista vazia</b></summary>
+
+Verifique três pontos: Web Services e REST ativos, conta com `webservice/rest:use` e filtro `course_ids` correto. Rode primeiro `moodle_site_info`: se a lista de funções for muito curta, o administrador liberou apenas o subconjunto móvel.
+</details>
+
+<details>
+<summary><b>Prazos de Turnitin ou quiz não aparecem</b></summary>
+
+Comportamento esperado. `turnitintooltwo` e `quiz` são módulos independentes sem a semântica de `mod_assign`, então este servidor não os lê. Confira na web.
+</details>
+
+<details>
+<summary><b>Uma tarefa mostra «not set» como prazo</b></summary>
+
+O docente não definiu prazo para essa tarefa, então não há valor a calcular. A tarefa continua na lista para você não perdê-la de vista.
+</details>
+
+<details>
+<summary><b>Acentuação quebrada no terminal do Windows</b></summary>
+
+A saída é UTF-8. Em consoles antigos execute `chcp 65001` ou use o Windows Terminal.
+</details>
+
+## Segurança 🔒
+
+- O token é uma **credencial**. Deixe apenas em `config.json` ou variáveis de ambiente, nunca no repositório; o `.gitignore` já exclui `config.json` e `get_token.log`.
+- `get_token.py` não registra o conteúdo da senha, apenas o comprimento, e a lê com `getpass`.
+- Todas as ferramentas são somente leitura: mesmo com o token vazado, nada pode ser alterado ou excluído por este servidor. Em caso de vazamento, revogue a chave em «Gerenciar chaves de acesso».
 - Não publique capturas de tráfego: o `wstoken` vai no corpo da requisição.
 
-## Compatibilidade
+## Compatibilidade ✅
 
-| Item | Detalhe |
+| Cliente / plataforma | Estado |
 |---|---|
-| Python | 3.8+ (somente biblioteca padrão) |
-| Protocolo MCP | `2024-11-05` |
-| Moodle | 3.x / 4.x com Web Services e protocolo REST ativos |
-| Ambiente testado | Moodle 4.3.6, conta com 435 funções liberadas (permissões completas) |
+| Claude Desktop | Suportado (entrada de servidor stdio) |
+| Cursor | Suportado (`mcp.json`) |
+| Marvis | Suportado (registro MCP) |
+| Outros clientes MCP | Suportado — JSON-RPC 2.0 padrão sobre stdio |
+| Windows / macOS / Linux | Suportado — sem código específico de plataforma |
 
-## Licença
+## Roteiro 🗺️
+
+- [ ] Suportar prazos de Turnitin e quiz no limite do que a API permite
+- [ ] Cache local opcional para reduzir idas e voltas em listas grandes
+- [ ] Avisos de paginação para contas com muitos cursos
+- [ ] Detalhes do **status** de entrega (corrigida / com feedback), sempre somente leitura
+- [ ] Levar a mesma superfície de ferramentas para LMS que não sejam Moodle
+
+## Contribuindo 🤝
+
+Issues e pull requests são bem-vindos. O servidor é um único arquivo: ler `server.py` leva minutos.
+
+- Mantenha zero dependências: apenas biblioteca padrão.
+- Todas as ferramentas devem continuar somente leitura.
+- Nunca faça commit de `config.json`, tokens ou capturas de tráfego.
+- Ao adicionar ferramenta, atualize a tabela e o README de **todos os idiomas**.
+
+## Feedback 📢
+
+Bugs e sugestões: [abra uma issue](https://github.com/Faixiang/moodle-mcp/issues).
+
+## Licença 📝
 
 MIT — veja [LICENSE](LICENSE).
-*（内容由AI生成，仅供参考）*
