@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_26cc2789d15311f196c5525400248c00
+    ReservedCode1: 4sLFpJ1bJQ4xENLXmsAkrFDOZyf+7rguMHV9VD0uzCbvVhTblHm95of8RCnoflC/0Pw8hJU09xwNqTfsuQRr5exkZlCfxqc+wBImXxuaM1GUugpp3puS1DjUAAALQFyEp8GfzDsurO+x9r/B/V6e8OPwaIqRzCct3TASRsvrlStrOExqOfz7L8cidKQ=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_26cc2789d15311f196c5525400248c00
+    ReservedCode2: 4sLFpJ1bJQ4xENLXmsAkrFDOZyf+7rguMHV9VD0uzCbvVhTblHm95of8RCnoflC/0Pw8hJU09xwNqTfsuQRr5exkZlCfxqc+wBImXxuaM1GUugpp3puS1DjUAAALQFyEp8GfzDsurO+x9r/B/V6e8OPwaIqRzCct3TASRsvrlStrOExqOfz7L8cidKQ=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### La Moodle que los agentes de IA sí pueden usar
 
 Lee tareas, fechas de entrega y archivos del curso directamente de la Web Service API de Moodle. Sin navegador, sin scrapers, sin clics.
@@ -260,3 +270,4 @@ Errores y sugerencias: [abre un issue](https://github.com/Faixiang/moodle-mcp/is
 ## Licencia 📝
 
 MIT — ver [LICENSE](LICENSE).
+*（内容由AI生成，仅供参考）*

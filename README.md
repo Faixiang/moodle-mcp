@@ -2,8 +2,7 @@
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### Your Moodle, as tools an AI agent can actually use
 
 Read assignments, deadlines and course files straight out of the Moodle Web Service API — no browser, no scraping, no clicking.

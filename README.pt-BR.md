@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_298b1a9dd15311f18460525400393706
+    ReservedCode1: FAAWSZV5iJVnpMn5OzDgOV6w1dRhk+mSX/2j/n9JQ1PmIAlB95946Zxo1enbRBRA0b27CQo83cNl9sD6eSi3YPPTwouu5yj1fgbqP+ZmzzVbH97HELrfeLUGZR/YBeApIVc7zwbirXEj7FR3jBQMsarabkQ/L7rJqYDpQRgl3gv0vP/kma1GBbhvedg=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_298b1a9dd15311f18460525400393706
+    ReservedCode2: FAAWSZV5iJVnpMn5OzDgOV6w1dRhk+mSX/2j/n9JQ1PmIAlB95946Zxo1enbRBRA0b27CQo83cNl9sD6eSi3YPPTwouu5yj1fgbqP+ZmzzVbH97HELrfeLUGZR/YBeApIVc7zwbirXEj7FR3jBQMsarabkQ/L7rJqYDpQRgl3gv0vP/kma1GBbhvedg=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### O Moodle que agentes de IA realmente conseguem usar
 
 Leia tarefas, prazos e arquivos do curso direto da Web Service API do Moodle. Sem navegador, sem scraper, sem cliques.
@@ -260,3 +270,4 @@ Bugs e sugestões: [abra uma issue](https://github.com/Faixiang/moodle-mcp/issue
 ## Licença 📝
 
 MIT — veja [LICENSE](LICENSE).
+*（内容由AI生成，仅供参考）*

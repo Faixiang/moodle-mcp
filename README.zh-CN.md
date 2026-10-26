@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_21f00acfd15311f196c5525400248c00
+    ReservedCode1: PNxeoX+0UkuyK6//tOvzc+cfESgny+DpNJICXBxeTBALqFxe8qnrM8E9p+t8d9MUVL1nBPi+g+eNwNl5RlhoCuQz+lkC4opiveEqaAt+tG2UVtxm+y/adJ42RO+0K6UanfHG7o7Hwe/sZJ2o05PW3nZgX+HQTS5Sz4e0ZNwIdiqPXHZxScUSFIDTDVA=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_21f00acfd15311f196c5525400248c00
+    ReservedCode2: PNxeoX+0UkuyK6//tOvzc+cfESgny+DpNJICXBxeTBALqFxe8qnrM8E9p+t8d9MUVL1nBPi+g+eNwNl5RlhoCuQz+lkC4opiveEqaAt+tG2UVtxm+y/adJ42RO+0K6UanfHG7o7Hwe/sZJ2o05PW3nZgX+HQTS5Sz4e0ZNwIdiqPXHZxScUSFIDTDVA=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### 让 AI Agent 真正能用的 Moodle
 
 直接从 Moodle Web Service API 读取作业、截止时间与课程文件——不浏览器、不爬虫、不点页面。
@@ -260,3 +270,4 @@ Bug 与功能建议：[提交 issue](https://github.com/Faixiang/moodle-mcp/issu
 ## 许可证 📝
 
 MIT —— 见 [LICENSE](LICENSE)。
+*（内容由AI生成，仅供参考）*

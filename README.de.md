@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_28e9bd3fd15311f196c5525400248c00
+    ReservedCode1: cwl5gAF1qnyKPmOnQSKaXpBHdcV+4gUkyhSnoRt3u2rhxlrx1JJe0kJfDCESeBKRfFfjvHT2zC2HKmWqNJ2bB2I59PsZM3wmYtRFNnpNWUPTc05+eT2oct5kweNl13HaM++5Aq/kDVZt7oJ9UXsRryI8j1lD5WKCbemZjWRTjsPMaGGpldrQHIBq46M=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_28e9bd3fd15311f196c5525400248c00
+    ReservedCode2: cwl5gAF1qnyKPmOnQSKaXpBHdcV+4gUkyhSnoRt3u2rhxlrx1JJe0kJfDCESeBKRfFfjvHT2zC2HKmWqNJ2bB2I59PsZM3wmYtRFNnpNWUPTc05+eT2oct5kweNl13HaM++5Aq/kDVZt7oJ9UXsRryI8j1lD5WKCbemZjWRTjsPMaGGpldrQHIBq46M=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### Das Moodle, das KI-Agenten wirklich nutzen können
 
 Aufgaben, Fristen und Kursdateien direkt über die Moodle-Web-Service-API lesen. Kein Browser, kein Scraper, keine Klicks.
@@ -260,3 +270,4 @@ Fehler und Wünsche: [Issue eröffnen](https://github.com/Faixiang/moodle-mcp/is
 ## Lizenz 📝
 
 MIT — siehe [LICENSE](LICENSE).
+*（内容由AI生成，仅供参考）*

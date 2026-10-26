@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_2adf7669d15311f18460525400393706
+    ReservedCode1: XLfKajEFR3HXW2dzsjAtbVIQLayF1p0FX2CE/SaVfROzTDVnSpr2+fE4lBnjYWQrWXLShdZc/TDYZsf6gTEyka6siT7EuyVZfWdS9SJ8tTFdCgL9A35dilQ+NPKlqjixvTFYhho0iIBfa/2ARhSSPYVuUqPg3MfkAulRjBU/sMQyBT8+4BUI0SPHjAc=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_2adf7669d15311f18460525400393706
+    ReservedCode2: XLfKajEFR3HXW2dzsjAtbVIQLayF1p0FX2CE/SaVfROzTDVnSpr2+fE4lBnjYWQrWXLShdZc/TDYZsf6gTEyka6siT7EuyVZfWdS9SJ8tTFdCgL9A35dilQ+NPKlqjixvTFYhho0iIBfa/2ARhSSPYVuUqPg3MfkAulRjBU/sMQyBT8+4BUI0SPHjAc=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### Moodle, которым ИИ-агенты действительно могут пользоваться
 
 Задания, дедлайны и файлы курсов читаются напрямую из Moodle Web Service API. Без браузера, без скраперов, без кликов по страницам.
@@ -260,3 +270,4 @@ Issues и pull requests приветствуются. Весь сервер — 
 ## Лицензия 📝
 
 MIT — см. [LICENSE](LICENSE).
+*（内容由AI生成，仅供参考）*

@@ -1,9 +1,19 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: c6eb62ba6ec5a28db2139adf23a2fe4b_24142d2cd15311f18460525400393706
+    ReservedCode1: MAqPL/HbMJ5tv8aWvn2lPHORVdyO2ZlEwWoGauH4J1mcCEtgmrsV4DEjhBHMYSyjS8vZyz/OM62NzJS1XhZ977vllQNOTSmzzhN10pNWSASoUALUD0tf91muV5prfmDyAvtM6+P9SzWDR4kjbVQVfbZA4S23nA60+c6+5KCZMTEqNAGkyj6DDktEWhk=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: c6eb62ba6ec5a28db2139adf23a2fe4b_24142d2cd15311f18460525400393706
+    ReservedCode2: MAqPL/HbMJ5tv8aWvn2lPHORVdyO2ZlEwWoGauH4J1mcCEtgmrsV4DEjhBHMYSyjS8vZyz/OM62NzJS1XhZ977vllQNOTSmzzhN10pNWSASoUALUD0tf91muV5prfmDyAvtM6+P9SzWDR4kjbVQVfbZA4S23nA60+c6+5KCZMTEqNAGkyj6DDktEWhk=
+---
+
 <div align="center">
 
 <img src="docs/banner.svg" alt="moodle-mcp" width="100%">
 
-# moodle-mcp
-
+# Moodle-Mcp
 ### 讓 AI Agent 真正能用的 Moodle
 
 直接從 Moodle Web Service API 讀取作業、截止時間與課程檔案——不開瀏覽器、不寫爬蟲、不用逐頁點擊。
@@ -260,3 +270,4 @@ Bug 與功能建議：[提交 issue](https://github.com/Faixiang/moodle-mcp/issu
 ## 授權 📝
 
 MIT —— 見 [LICENSE](LICENSE)。
+*（内容由AI生成，仅供参考）*
