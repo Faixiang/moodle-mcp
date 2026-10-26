@@ -32,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
 PROTOCOL_VERSION = "2024-11-05"
 SERVER_NAME = "moodle-mcp"
-SERVER_VERSION = "1.1.0"
+SERVER_VERSION = "1.2.0"
 
 
 def log(msg):
@@ -159,12 +159,33 @@ def normalize_week(value):
     return int(m.group(0)) if m else None
 
 
-def section_week(name, index):
-    """Read the week number from a section name, falling back to its index."""
-    m = re.search(r"week\s*0*(\d+)", str(name or ""), re.I)
+def section_week(name):
+    """Read the week number from a section name, or None when unnumbered.
+
+    Understands "Week 6", "Unit 4", "第 6 周 / 第 6 週" and number-prefixed
+    topics such as "6. Sorting" or "6) Sorting". Overview blocks ("General",
+    "Project Submission", "Online Judge Questions") carry no number and
+    therefore return None: they can never share a slot with a real week, so a
+    topic titled after its own index is never mistaken for a positional week.
+    """
+    s = str(name or "")
+    for pat in (r"week\s*0*(\d+)", r"(?:unit|lesson|chapter|topic)\s*0*(\d+)",
+                r"第\s*0*(\d+)\s*[周週]"):
+        m = re.search(pat, s, re.I)
+        if m:
+            return int(m.group(1))
+    m = re.search(r"^\s*0*(\d+)\s*[\.\)、:：]\s*\S", s)
     if m:
         return int(m.group(1))
-    return index
+    return None
+
+
+def section_label(week, name):
+    """Folder name for a section: Week N when numbered, its own title otherwise."""
+    if week is not None:
+        return "Week %s" % week
+    safe = re.sub(r'[\\/:*?"<>|]+', " ", str(name or "")).strip()
+    return safe or "Unsorted"
 
 
 def assign_attachments(course_id, cfg=None):
@@ -203,9 +224,9 @@ def week_manifest(course_id, week, cfg=None):
     att = assign_attachments(cid, cfg=cfg)
     wanted = normalize_week(week)
     result = []
-    for idx, sec in enumerate(data or []):
+    for sec in (data or []):
         sec_name = sec.get("name") or ("Section %s" % sec.get("section"))
-        w = section_week(sec_name, idx + 1)
+        w = section_week(sec_name)
         if wanted != "all" and w != wanted:
             continue
         files = []
@@ -225,7 +246,10 @@ def week_manifest(course_id, week, cfg=None):
                     item["url"] = with_token(item.get("url"), cfg)
                     item["from"] = mod.get("name")
                     files.append(item)
-        result.append({"week": w, "section": sec_name, "files": files})
+        if not files and wanted == "all":
+            continue
+        result.append({"week": w, "label": section_label(w, sec_name),
+                       "section": sec_name, "files": files})
     return result
 
 
@@ -620,7 +644,7 @@ def call_tool(name, args):
         if not dest_root:
             lines = ["# 待下载清单（未指定 dest_root，仅列举）", ""]
             for m in manifest:
-                lines.append("## Week %s（%s）" % (m["week"], m["section"]))
+                lines.append("## %s（%s）" % (m["label"], m["section"]))
                 if not m["files"]:
                     lines.append("- 该周暂无可下载文件")
                 for f in m["files"]:
@@ -631,9 +655,9 @@ def call_tool(name, args):
         report = []
         ok = skip = fail = 0
         for m in manifest:
-            sub = os.path.join(dest_root, "Week %s" % m["week"])
+            sub = os.path.join(dest_root, m["label"])
             os.makedirs(sub, exist_ok=True)
-            report.append("## Week %s -> %s" % (m["week"], sub))
+            report.append("## %s -> %s" % (m["label"], sub))
             if not m["files"]:
                 report.append("- 该周暂无可下载文件")
             for f in m["files"]:
