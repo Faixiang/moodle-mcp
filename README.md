@@ -1,5 +1,7 @@
 # moodle-mcp
 
+**English** · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português (BR)](README.pt-BR.md) · [Русский](README.ru.md)
+
 An MCP (Model Context Protocol) server that exposes the **Moodle Web Service API** as tools an AI agent can call directly — no browser, no scraping, no clicking.
 
 Moodle powers a large share of universities and colleges worldwide, yet it had no general-purpose MCP server. This project fills that gap: one zero-dependency Python file, six tools, works against any Moodle 3.x/4.x site with Web Services enabled.
@@ -109,7 +111,7 @@ Submitted/graded: 51 | Outstanding: 25 (due soon 4, overdue 14, other 7)
 ## Known limitations
 
 - **Turnitin (`turnitintooltwo`) and `quiz` activities are not covered.** They are separate modules without `mod_assign` semantics; their deadlines must be checked in the web UI.
-- Assignments with no deadline configured show as `未设置` / `not set`.
+- Assignments with no deadline configured show as `not set`.
 - Weekly digest reports *unsubmitted* items only. Submitted-but-ungraded items appear under the counts, not the tables.
 - Rate limiting: some sites run a WAF that returns `502` on rapid consecutive requests. The server serialises calls and pauses 150 ms between them; if you still get `502`, back off and retry.
 - Requires the site to have Web Services enabled and your account to hold the `webservice/rest:use` capability. Many admins grant the full function list; some restrict it to the mobile-only subset.
