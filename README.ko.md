@@ -70,6 +70,7 @@ pip 설치 없음. node 없음. 브라우저 없음. 그냥 python server.py.
 | `moodle_recent_updates` | 최근 N일 내 추가·변경된 항목(과제, 파일, 공지)을 최신순으로 반환합니다. | `days`(기본 7), `course_ids` |
 | `moodle_pending_assignments` | 미제출 과제를 **마감 임박** / **기한 초과** / **여유 있음**으로 분류하고 마감 시각과 남은 일수를 표시합니다. | `ahead_days`(기본 14), `course_ids` |
 | `moodle_course_files` | 한 강좌의 섹션 구조와 파일 목록, 다운로드 직링크·수정 시각 포함. **메타데이터만 반환하며 파일은 내려받지 않습니다.** | `course_id` |
+| `moodle_download_week` | 특정 주차의 파일(강의자료 + 과제 첨부)을 로컬 `Week N` 폴더로 내려받습니다. 폴더 생성·크기 검증·기존 파일 건너뛰기를 자동 처리. `dest_root` 를 생략하면 목록만 반환합니다. | `course_id`, `week` (예: `6` 또는 `"Week 6"`, `all` 은 전체), `dest_root` |
 | `moodle_weekly_digest` | 한 번에 요약: 신규 + 마감 임박 + 기한 초과 + 통계. 시작점으로 권장합니다. | `days`(기본 7), `ahead_days`(기본 14) |
 
 ## 요구 사항 📦

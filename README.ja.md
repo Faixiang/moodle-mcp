@@ -70,6 +70,7 @@ pip 不要。node 不要。ブラウザ不要。python server.py だけ。
 | `moodle_recent_updates` | 直近 N 日間に追加・更新されたもの（課題・ファイル・お知らせ）を新しい順に返します。 | `days`（既定 7）、`course_ids` |
 | `moodle_pending_assignments` | 未提出の課題を**締切間近** / **期限超過** / **余裕あり**に分類し、締切と残り日数を併記。 | `ahead_days`（既定 14）、`course_ids` |
 | `moodle_course_files` | 1 コースのセクション構成とファイル一覧、ダウンロード直リンク・更新日時付き。**メタデータのみで、ファイルは取得しません。** | `course_id` |
+| `moodle_download_week` | 指定した週のファイル（スライド + 課題添付）をローカルの `Week N` フォルダーへダウンロード。フォルダー作成・サイズ検証・既存ファイルのスキップを自動化。`dest_root` を省略すると一覧のみ返します。 | `course_id`、`week`（例 `6` または `"Week 6"`、`all` で全週）、`dest_root` |
 | `moodle_weekly_digest` | 一括サマリー：新着＋締切間近＋期限超過＋統計。まずはこれから。 | `days`（既定 7）、`ahead_days`（既定 14） |
 
 ## 動作要件 📦

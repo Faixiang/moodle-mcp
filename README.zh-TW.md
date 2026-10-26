@@ -70,6 +70,7 @@ Moodle 支撐着全球大量院校的教學平台，卻一直沒有通用的 MCP
 | `moodle_recent_updates` | 最近 N 天內新增或更新的內容（作業、檔案、公告），按時間倒序。 | `days`（預設 7）、`course_ids` |
 | `moodle_pending_assignments` | 未提交作業，分為**臨期** / **逾期** / **無壓力**三類，含截止時間與剩餘天數。 | `ahead_days`（預設 14）、`course_ids` |
 | `moodle_course_files` | 單一課程的章節結構與檔案清單，含下載直連與修改時間。**只回傳中繼資料，不下載任何檔案。** | `course_id` |
+| `moodle_download_week` | 把某一週的檔案（課件 + 作業附件）下載到本機 `Week N` 資料夾：自動建立目錄、驗證檔案大小、跳過已存在檔案。省略 `dest_root` 時僅回傳待下載清單。 | `course_id`、`week`（如 `6` 或 `"Week 6"`，填 `all` 為全部週次）、`dest_root` |
 | `moodle_weekly_digest` | 一次過彙總：近期新增 + 臨期未交 + 逾期未交 + 統計。建議作為起點。 | `days`（預設 7）、`ahead_days`（預設 14） |
 
 ## 配置要求 📦

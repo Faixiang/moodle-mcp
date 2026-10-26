@@ -70,6 +70,7 @@ Pas de pip install. Pas de node. Pas de navigateur. Juste python server.py.
 | `moodle_recent_updates` | Contenus ajoutés ou modifiés ces N derniers jours (devoirs, fichiers, annonces), du plus récent au plus ancien. | `days` (7 par défaut), `course_ids` |
 | `moodle_pending_assignments` | Devoirs non rendus, classés en **bientôt dû** / **en retard** / **sans urgence**, avec échéance et jours restants. | `ahead_days` (14 par défaut), `course_ids` |
 | `moodle_course_files` | Structure des sections et fichiers d'un cours, avec liens de téléchargement et dates de modification. **Métadonnées seules : aucun téléchargement.** | `course_id` |
+| `moodle_download_week` | Télécharge les fichiers d'une semaine (supports + pièces jointes de devoirs) dans un dossier local `Week N` : création des dossiers, contrôle des tailles, fichiers déjà présents ignorés. Sans `dest_root`, simple liste. | `course_id`, `week` (ex. `6` ou `"Week 6"`, ou `all`), `dest_root` |
 | `moodle_weekly_digest` | Synthèse en un appel : nouveautés + échéances proches + retards + statistiques. Point de départ recommandé. | `days` (7 par défaut), `ahead_days` (14 par défaut) |
 
 ## Prérequis 📦

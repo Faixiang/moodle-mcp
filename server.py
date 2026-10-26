@@ -7,7 +7,7 @@ Moodle MCP Server (zero-dependency, stdio JSON-RPC 2.0)
       无需启动浏览器。
 
 配置：同目录 config.json
-      {"url": "https://your-moodle.example.com", "token": "<wstoken>"}
+      {"url": "https://moodle.sfu.edu.hk", "token": "<wstoken>"}
       或用环境变量 MOODLE_URL / MOODLE_TOKEN 覆盖。
 
 注意：stdout 只输出 JSON-RPC 帧，所有日志写 stderr。
@@ -19,6 +19,7 @@ import json
 import time
 import ssl
 import datetime
+import re
 import urllib.request
 import urllib.parse
 
@@ -47,7 +48,7 @@ class MoodleError(Exception):
 
 def load_config():
     cfg = {
-        "url": os.environ.get("MOODLE_URL", "").strip(),
+        "url": os.environ.get("MOODLE_URL", "https://moodle.sfu.edu.hk").strip(),
         "token": os.environ.get("MOODLE_TOKEN", "").strip(),
     }
     if os.path.exists(CONFIG_PATH):
@@ -72,14 +73,7 @@ def moodle_call(function, params=None, cfg=None):
             "未配置 Token。请编辑 %s 写入 {\"url\":\"...\",\"token\":\"<wstoken>\"}，"
             "或设置环境变量 MOODLE_TOKEN。获取方式见 README。" % CONFIG_PATH
         )
-    site = (cfg.get("url") or "").strip()
-    if not site:
-        raise MoodleError(
-            "未配置 Moodle 站点地址。请编辑 %s 写入 "
-            "{\"url\":\"https://your-moodle.example.com\",\"token\":\"<wstoken>\"}，"
-            "或设置环境变量 MOODLE_URL。" % CONFIG_PATH
-        )
-    endpoint = site.rstrip("/") + "/webservice/rest/server.php"
+    endpoint = cfg["url"].rstrip("/") + "/webservice/rest/server.php"
 
     pairs = [
         ("wstoken", token),
@@ -136,6 +130,123 @@ def moodle_call(function, params=None, cfg=None):
     if isinstance(data, dict) and (data.get("exception") or data.get("errorcode")):
         raise MoodleError("%s: %s" % (data.get("errorcode", "error"), data.get("message", "")))
     return data
+
+
+# ---------------------------------------------------------------- 链接与周次
+
+def with_token(url, cfg=None):
+    """给 pluginfile 链接补上 token，使其可被脚本直接下载。"""
+    if not url:
+        return url
+    if "token=" in url:
+        return url
+    cfg = cfg or load_config()
+    tok = (cfg.get("token") or "").strip()
+    if not tok:
+        return url
+    sep = "&" if "?" in url else "?"
+    return url + sep + "token=" + urllib.parse.quote(tok)
+
+
+def normalize_week(value):
+    """把 6 / '6' / 'Week 6' 归一为整数；all/全部 返回 'all'。"""
+    if value is None:
+        return None
+    s = str(value).strip().lower()
+    if s in ("all", "*", "全部", "所有"):
+        return "all"
+    m = re.search(r"\d+", s)
+    return int(m.group(0)) if m else None
+
+
+def section_week(name, index):
+    """从章节名解析周次，解析不到则用章节序号。"""
+    m = re.search(r"week\s*0*(\d+)", str(name or ""), re.I)
+    if m:
+        return int(m.group(1))
+    return index
+
+
+def assign_attachments(course_id, cfg=None):
+    """取作业模块的介绍附件（Assignment N 的题目文件），返回 {assign_id: [file...]}。"""
+    try:
+        raw = moodle_call("mod_assign_get_assignments", {"courseids": [int(course_id)]}, cfg=cfg)
+    except MoodleError as exc:
+        log("作业附件查询失败: %s" % exc)
+        return {}
+    out = {}
+    for course in (raw.get("courses") or []):
+        for a in (course.get("assignments") or []):
+            files = []
+            seen = set()
+            for key in ("introattachments", "introfiles"):
+                for f in (a.get(key) or []):
+                    fn = f.get("filename")
+                    if not fn or fn in seen:
+                        continue
+                    seen.add(fn)
+                    files.append({
+                        "filename": fn,
+                        "filesize": f.get("filesize"),
+                        "modified": ts2s(f.get("timemodified")),
+                        "url": f.get("fileurl"),
+                    })
+            if files:
+                out[a.get("id")] = files
+    return out
+
+
+def week_manifest(course_id, week, cfg=None):
+    """收集指定周（或全部）可下载文件。"""
+    cid = int(course_id)
+    data = moodle_call("core_course_get_contents", {"courseid": cid}, cfg=cfg)
+    att = assign_attachments(cid, cfg=cfg)
+    wanted = normalize_week(week)
+    result = []
+    for idx, sec in enumerate(data or []):
+        sec_name = sec.get("name") or ("Section %s" % sec.get("section"))
+        w = section_week(sec_name, idx + 1)
+        if wanted != "all" and w != wanted:
+            continue
+        files = []
+        for mod in (sec.get("modules") or []):
+            for cnt in (mod.get("contents") or []):
+                if cnt.get("type") == "file" and cnt.get("fileurl"):
+                    files.append({
+                        "filename": cnt.get("filename") or "unnamed.bin",
+                        "filesize": cnt.get("filesize"),
+                        "modified": ts2s(cnt.get("timemodified")),
+                        "url": with_token(cnt.get("fileurl"), cfg),
+                        "from": mod.get("name"),
+                    })
+            if mod.get("modname") == "assign":
+                for f in att.get(mod.get("instance"), []):
+                    item = dict(f)
+                    item["url"] = with_token(item.get("url"), cfg)
+                    item["from"] = mod.get("name")
+                    files.append(item)
+        result.append({"week": w, "section": sec_name, "files": files})
+    return result
+
+
+def fetch_to_file(url, dest):
+    """下载到 dest，返回 (字节数, content_type)。"""
+    req = urllib.request.Request(url, headers={"User-Agent": "MoodleMCP/1.1"})
+    tmp = dest + ".part"
+    with urllib.request.urlopen(req, timeout=180, context=ssl.create_default_context()) as resp:
+        ctype = resp.headers.get("Content-Type") or ""
+        first = resp.read(65536)
+        if first[:1] == b"{" and b'"error' in first[:200]:
+            raise MoodleError("下载被拒，站点返回：%s" % first[:200].decode("utf-8", "replace"))
+        with open(tmp, "wb") as fh:
+            fh.write(first)
+            while True:
+                chunk = resp.read(262144)
+                if not chunk:
+                    break
+                fh.write(chunk)
+    os.replace(tmp, dest)
+    return os.path.getsize(dest), ctype
 
 
 # ---------------------------------------------------------------- 工具函数
@@ -399,11 +510,25 @@ TOOLS = [
     },
     {
         "name": "moodle_course_files",
-        "description": "列出指定课程的章节结构与课件文件（文件名、下载直链、修改时间），不下载文件。",
+        "description": "列出指定课程的章节结构与课件文件（文件名、带 token 的可下载直链、修改时间），不下载文件。",
         "inputSchema": {
             "type": "object",
             "properties": {"course_id": {"type": "integer", "description": "课程ID"}},
             "required": ["course_id"],
+        },
+    },
+    {
+        "name": "moodle_download_week",
+        "description": "按周把课程文件下载到本地目录：自动建「Week N」子文件夹、下载该周全部课件与作业附件、按大小校验并跳过已存在文件。省略 dest_root 时只返回待下载清单。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "course_id": {"type": "integer", "description": "课程ID"},
+                "week": {"type": ["integer", "string"], "description": "周次，如 6 或 \"Week 6\"；填 all 表示全部周次"},
+                "dest_root": {"type": "string", "description": "本地根目录，例如 U:\\OneDrive\\...\\CIS221 Calculus；省略则仅列举"},
+                "overwrite": {"type": "boolean", "description": "保留字段，默认不覆盖同名同大小文件"},
+            },
+            "required": ["course_id", "week"],
         },
     },
 ]
@@ -455,6 +580,7 @@ def call_tool(name, args):
     if name == "moodle_course_files":
         cid = int(args["course_id"])
         data = moodle_call("core_course_get_contents", {"courseid": cid}, cfg=cfg)
+        att = assign_attachments(cid, cfg=cfg)
         out = []
         for sec in data or []:
             sec_name = sec.get("name") or ("Section %s" % sec.get("section"))
@@ -466,16 +592,71 @@ def call_tool(name, args):
                             "filename": cnt.get("filename"),
                             "filesize": cnt.get("filesize"),
                             "modified": ts2s(cnt.get("timemodified")),
-                            "url": cnt.get("fileurl"),
+                            "url": with_token(cnt.get("fileurl"), cfg),
                         })
+                if mod.get("modname") == "assign":
+                    for f in att.get(mod.get("instance"), []):
+                        item = dict(f)
+                        item["url"] = with_token(item.get("url"), cfg)
+                        files.append(item)
                 out.append({
                     "section": sec_name,
                     "module": mod.get("name"),
                     "type": mod.get("modname"),
+                    "instance": mod.get("instance"),
                     "url": mod.get("url"),
                     "files": files,
                 })
         return json.dumps(out, ensure_ascii=False, indent=2)
+
+    if name == "moodle_download_week":
+        cid = int(args["course_id"])
+        week_arg = args.get("week")
+        dest_root = (args.get("dest_root") or "").strip()
+        manifest = week_manifest(cid, week_arg, cfg=cfg)
+        if not manifest:
+            raise MoodleError("课程 %s 未找到周次 %s，可先用 moodle_course_files 查看现有周次。" % (cid, week_arg))
+
+        if not dest_root:
+            lines = ["# 待下载清单（未指定 dest_root，仅列举）", ""]
+            for m in manifest:
+                lines.append("## Week %s（%s）" % (m["week"], m["section"]))
+                if not m["files"]:
+                    lines.append("- 该周暂无可下载文件")
+                for f in m["files"]:
+                    lines.append("- %s ｜ %s B ｜ 来自 %s" % (f["filename"], f.get("filesize"), f.get("from")))
+                lines.append("")
+            return "\n".join(lines)
+
+        report = []
+        ok = skip = fail = 0
+        for m in manifest:
+            sub = os.path.join(dest_root, "Week %s" % m["week"])
+            os.makedirs(sub, exist_ok=True)
+            report.append("## Week %s -> %s" % (m["week"], sub))
+            if not m["files"]:
+                report.append("- 该周暂无可下载文件")
+            for f in m["files"]:
+                dest = os.path.join(sub, f["filename"])
+                expect = f.get("filesize")
+                try:
+                    if os.path.exists(dest) and expect and os.path.getsize(dest) == int(expect):
+                        report.append("- SKIP %s（已存在且大小一致）" % f["filename"])
+                        skip += 1
+                        continue
+                    size, ctype = fetch_to_file(f["url"], dest)
+                    if expect and int(expect) != size:
+                        report.append("- SIZE-MISMATCH %s ｜ 落地 %s B ｜ 期望 %s B" % (f["filename"], size, expect))
+                        fail += 1
+                    else:
+                        report.append("- OK %s ｜ %s B ｜ %s" % (f["filename"], size, ctype))
+                        ok += 1
+                except Exception as exc:
+                    fail += 1
+                    report.append("- FAIL %s ｜ %s" % (f["filename"], exc))
+            report.append("")
+        report.append("合计：成功 %d，跳过 %d，失败 %d" % (ok, skip, fail))
+        return "\n".join(report)
 
     raise MoodleError("未知工具：%s" % name)
 

@@ -70,6 +70,7 @@ Moodle 支撑着全球大量高校的教学平台，却一直没有通用的 MCP
 | `moodle_recent_updates` | 最近 N 天内新增或更新的内容（作业、文件、公告），按时间倒序。 | `days`（默认 7）、`course_ids` |
 | `moodle_pending_assignments` | 未提交作业，分为**临期** / **逾期** / **无压力**三类，含截止时间与剩余天数。 | `ahead_days`（默认 14）、`course_ids` |
 | `moodle_course_files` | 单个课程的章节结构与文件清单，含下载直链与修改时间。**只返回元数据，不下载任何文件。** | `course_id` |
+| `moodle_download_week` | 把某一周的文件（课件 + 作业附件）下载到本地 `Week N` 文件夹：自动建目录、校验文件大小、跳过已存在文件。省略 `dest_root` 时只返回待下载清单。 | `course_id`、`week`（如 `6` 或 `"Week 6"`，填 `all` 为全部周次）、`dest_root` |
 | `moodle_weekly_digest` | 一次性汇总：近期新增 + 临期未交 + 逾期未交 + 统计。建议作为起点。 | `days`（默认 7）、`ahead_days`（默认 14） |
 
 ## 配置要求 📦

@@ -70,7 +70,10 @@ No pip install. No node. No browser. Just python server.py.
 | `moodle_recent_updates` | Content added or updated in the last N days (assignments, files, announcements), newest first. | `days` (default 7), `course_ids` |
 | `moodle_pending_assignments` | Unsubmitted assignments, split into **due soon** / **overdue** / **no pressure**, with deadline and days remaining. | `ahead_days` (default 14), `course_ids` |
 | `moodle_course_files` | Section structure and file list for one course, including direct download URLs and modified times. **Metadata only — nothing is downloaded.** | `course_id` |
+| `moodle_download_week` | Download one week's files (slides + assignment attachments) into a local `Week N` folder. Creates folders, verifies sizes, skips files already present. Omit `dest_root` to get the list only. | `course_id`, `week` (e.g. `6` or `"Week 6"`, or `all`), `dest_root` |
 | `moodle_weekly_digest` | The one-shot summary: recent additions + due-soon + overdue + counts. Best starting point. | `days` (default 7), `ahead_days` (default 14) |
+
+> `moodle_download_week` only writes to your local disk — it never submits anything to Moodle. File URLs returned by the read tools already carry your token, so they download as-is: treat them as secrets and keep them out of logs, screenshots and public repos.
 
 ## Requirements 📦
 
