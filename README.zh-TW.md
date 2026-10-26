@@ -14,6 +14,8 @@
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="零依賴">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -34,6 +36,8 @@
 > 本 server 提供管線，skill 提供其上的工作流程：偵測新發布課業、鏡像缺漏週次資料夾、列出未提交活動、對下載的檔案進行
 > 專業講述並劃分重點等級。它以 git submodule 形式掛在 [`skill/moodle-course-watch/`](skill/moodle-course-watch/)（複製時需加 `--recurse-submodules`），
 > 也有獨立倉庫供只想裝 skill 的人單獨複製。
+
+> **持續維護中。** 最新版本 **v1.3.0**（2026-10-27）：quiz 不再是盲區，`moodle_quiz_status` 可直接讀取真實作答狀態與成績。完整[更新記錄](README.md#changelog-)見文末。
 
 ## 介面預覽 🖥️
 
@@ -74,8 +78,9 @@ Moodle 支撐着全球大量院校的教學平台，卻一直沒有通用的 MCP
 | `moodle_list_courses` | 列出所有已選課程，含課程 ID、簡稱、全名。 | — |
 | `moodle_recent_updates` | 最近 N 天內新增或更新的內容（作業、檔案、公告），按時間倒序。 | `days`（預設 7）、`course_ids` |
 | `moodle_pending_assignments` | 未提交作業，分為**臨期** / **逾期** / **無壓力**三類，含截止時間與剩餘天數。 | `ahead_days`（預設 14）、`course_ids` |
+| `moodle_quiz_status` | 逐個測驗讀取真實作答記錄：**已交** / **進行中** / **未開始**，含最佳得分、開放視窗、限時與「視窗已關閉」標記。 | `course_ids`、`only_pending` |
 | `moodle_course_files` | 單一課程的章節結構與檔案清單，含下載直連與修改時間。**只回傳中繼資料，不下載任何檔案。** | `course_id` |
-| `moodle_download_week` | 把某一週的檔案（課件 + 作業附件）下載到本機 `Week N` 資料夾：自動建立目錄、驗證檔案大小、跳過已存在檔案。省略 `dest_root` 時僅回傳待下載清單。 | `course_id`、`week`（如 `6` 或 `"Week 6"`，填 `all` 為全部週次）、`dest_root` |
+| `moodle_download_week` | 把某一週的檔案（課件 + 作業附件）下載到本機資料夾（章節標題含週次時命名為 `Week N`，否則沿用章節原名，如 `Online Judge Questions`、`Project Submission`）：自動建立目錄、驗證檔案大小、跳過已存在檔案。省略 `dest_root` 時僅回傳待下載清單。 | `course_id`、`week`（如 `6` 或 `"Week 6"`，填 `all` 為全部週次）、`dest_root` |
 | `moodle_weekly_digest` | 一次過彙總：近期新增 + 臨期未交 + 逾期未交 + 統計。建議作為起點。 | `days`（預設 7）、`ahead_days`（預設 14） |
 
 ## 配置要求 📦

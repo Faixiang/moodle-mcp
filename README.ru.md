@@ -14,6 +14,8 @@
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Без зависимостей">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -35,6 +37,8 @@
 > [`skill/moodle-course-watch/`](skill/moodle-course-watch/) (clone with `--recurse-submodules`), and also published
 > standalone.
 
+
+> **Активно поддерживается.** Последний релиз **v1.3.0** (2026-10-27): тесты больше не «слепая зона» — `moodle_quiz_status` читает реальный статус попыток и баллы. Полный [список изменений](README.md#changelog-) в конце файла.
 
 ## Предпросмотр 🖥️
 
@@ -75,6 +79,7 @@ Moodle обеспечивает учебные платформы вузов п�
 | `moodle_list_courses` | Перечисляет все курсы с ID, кратким и полным названием. | — |
 | `moodle_recent_updates` | Новое и изменённое за последние N дней (задания, файлы, объявления), от новых к старым. | `days` (по умолчанию 7), `course_ids` |
 | `moodle_pending_assignments` | Не сданные задания с разбивкой **скоро срок** / **просрочено** / **без спешки**, с дедлайном и остатком дней. | `ahead_days` (по умолчанию 14), `course_ids` |
+| `moodle_quiz_status` | Реальный статус каждого теста (**сдан** / **в процессе** / **не начат**) с лучшим баллом, окном доступа, лимитом времени и пометкой *окно закрыто*. | `course_ids`, `only_pending` |
 | `moodle_course_files` | Структура разделов и файлы одного курса с прямыми ссылками и датой изменения. **Только метаданные, файлы не скачиваются.** | `course_id` |
 | `moodle_download_week` | Скачивает файлы одной недели (слайды + вложения заданий) в локальную папку `Week N`: создаёт каталоги, проверяет размеры, пропускает уже скачанное. Без `dest_root` — только список. | `course_id`, `week` (например `6` или `"Week 6"`, или `all`), `dest_root` |
 | `moodle_weekly_digest` | Всё сразу: новое + ближайшие сроки + просрочки + статистика. Рекомендуемая точка входа. | `days` (по умолчанию 7), `ahead_days` (по умолчанию 14) |

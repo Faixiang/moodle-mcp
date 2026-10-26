@@ -14,6 +14,8 @@ Moodle Web Service API에서 과제, 마감일, 강의 자료를 직접 가져�
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="의존성 없음">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -35,6 +37,8 @@ Moodle Web Service API에서 과제, 마감일, 강의 자료를 직접 가져�
 > [`skill/moodle-course-watch/`](skill/moodle-course-watch/) (clone with `--recurse-submodules`), and also published
 > standalone.
 
+
+> **지속적으로 유지보수 중입니다.** 최신 릴리스 **v1.3.0**(2026-10-27): 퀴즈는 더 이상 사각지대가 아니며 `moodle_quiz_status`가 실제 응시 상태와 점수를 읽어옵니다. 전체 변경 내역은 [문서 끝](README.md#changelog-)에 있습니다.
 
 ## 미리보기 🖥️
 
@@ -75,6 +79,7 @@ pip 설치 없음. node 없음. 브라우저 없음. 그냥 python server.py.
 | `moodle_list_courses` | 수강 중인 모든 강좌를 나열합니다. 강좌 ID, 약칭, 전체 이름 포함. | — |
 | `moodle_recent_updates` | 최근 N일 내 추가·변경된 항목(과제, 파일, 공지)을 최신순으로 반환합니다. | `days`(기본 7), `course_ids` |
 | `moodle_pending_assignments` | 미제출 과제를 **마감 임박** / **기한 초과** / **여유 있음**으로 분류하고 마감 시각과 남은 일수를 표시합니다. | `ahead_days`(기본 14), `course_ids` |
+| `moodle_quiz_status` | 퀴즈별 응시 상태(**제출 완료** / **진행 중** / **미응시**)와 최고 점수·응시 기간·제한 시간·「응시 기간 종료」 표시를 반환합니다. | `course_ids`, `only_pending` |
 | `moodle_course_files` | 한 강좌의 섹션 구조와 파일 목록, 다운로드 직링크·수정 시각 포함. **메타데이터만 반환하며 파일은 내려받지 않습니다.** | `course_id` |
 | `moodle_download_week` | 특정 주차의 파일(강의자료 + 과제 첨부)을 로컬 `Week N` 폴더로 내려받습니다. 폴더 생성·크기 검증·기존 파일 건너뛰기를 자동 처리. `dest_root` 를 생략하면 목록만 반환합니다. | `course_id`, `week` (예: `6` 또는 `"Week 6"`, `all` 은 전체), `dest_root` |
 | `moodle_weekly_digest` | 한 번에 요약: 신규 + 마감 임박 + 기한 초과 + 통계. 시작점으로 권장합니다. | `days`(기본 7), `ahead_days`(기본 14) |

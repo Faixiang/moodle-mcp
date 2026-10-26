@@ -14,6 +14,8 @@ Lee tareas, fechas de entrega y archivos del curso directamente de la Web Servic
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Sin dependencias">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -35,6 +37,8 @@ Lee tareas, fechas de entrega y archivos del curso directamente de la Web Servic
 > [`skill/moodle-course-watch/`](skill/moodle-course-watch/) (clone with `--recurse-submodules`), and also published
 > standalone.
 
+
+> **En mantenimiento activo.** Última versión **v1.3.0** (2026-10-27): los cuestionarios ya no son un punto ciego — `moodle_quiz_status` lee el estado real de los intentos y las notas. Historial completo en el [registro de cambios](README.md#changelog-).
 
 ## Vista previa 🖥️
 
@@ -75,6 +79,7 @@ Sin pip install. Sin node. Sin navegador. Solo python server.py.
 | `moodle_list_courses` | Lista todos los cursos matriculados con ID, nombre corto y nombre completo. | — |
 | `moodle_recent_updates` | Contenido nuevo o modificado en los últimos N días (tareas, archivos, avisos), del más reciente al más antiguo. | `days` (7 por defecto), `course_ids` |
 | `moodle_pending_assignments` | Tareas sin entregar, clasificadas en **próximas** / **vencidas** / **sin prisa**, con fecha límite y días restantes. | `ahead_days` (14 por defecto), `course_ids` |
+| `moodle_quiz_status` | Estado real de cada cuestionario (**entregado** / **en curso** / **sin empezar**) con mejor nota, ventana de apertura, tiempo límite y aviso de *ventana cerrada*. | `course_ids`, `only_pending` |
 | `moodle_course_files` | Estructura de secciones y archivos de un curso, con enlaces de descarga y fecha de modificación. **Solo metadatos: no descarga nada.** | `course_id` |
 | `moodle_download_week` | Descarga los archivos de una semana (diapositivas + adjuntos de tareas) en una carpeta local `Week N`: crea directorios, verifica tamaños y omite lo ya existente. Sin `dest_root` solo muestra la lista. | `course_id`, `week` (p. ej. `6` o `"Week 6"`, o `all`), `dest_root` |
 | `moodle_weekly_digest` | Resumen completo en una llamada: novedades + próximas + vencidas + estadísticas. Recomendado como punto de partida. | `days` (7 por defecto), `ahead_days` (14 por defecto) |

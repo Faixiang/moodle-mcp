@@ -14,6 +14,8 @@ Lisez les devoirs, les échéances et les fichiers de cours directement depuis l
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Zéro dépendance">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -35,6 +37,8 @@ Lisez les devoirs, les échéances et les fichiers de cours directement depuis l
 > [`skill/moodle-course-watch/`](skill/moodle-course-watch/) (clone with `--recurse-submodules`), and also published
 > standalone.
 
+
+> **Maintenu activement.** Dernière version **v1.3.0** (2026-10-27) : les quiz ne sont plus un angle mort — `moodle_quiz_status` lit l'état réel des tentatives et les notes. Journal complet en [fin de fichier](README.md#changelog-).
 
 ## Aperçu 🖥️
 
@@ -75,6 +79,7 @@ Pas de pip install. Pas de node. Pas de navigateur. Juste python server.py.
 | `moodle_list_courses` | Liste tous les cours inscrits avec ID, nom abrégé et nom complet. | — |
 | `moodle_recent_updates` | Contenus ajoutés ou modifiés ces N derniers jours (devoirs, fichiers, annonces), du plus récent au plus ancien. | `days` (7 par défaut), `course_ids` |
 | `moodle_pending_assignments` | Devoirs non rendus, classés en **bientôt dû** / **en retard** / **sans urgence**, avec échéance et jours restants. | `ahead_days` (14 par défaut), `course_ids` |
+| `moodle_quiz_status` | État réel de chaque quiz (**rendu** / **en cours** / **non commencé**) avec meilleure note, fenêtre d'ouverture, durée limite et indicateur *fenêtre fermée*. | `course_ids`, `only_pending` |
 | `moodle_course_files` | Structure des sections et fichiers d'un cours, avec liens de téléchargement et dates de modification. **Métadonnées seules : aucun téléchargement.** | `course_id` |
 | `moodle_download_week` | Télécharge les fichiers d'une semaine (supports + pièces jointes de devoirs) dans un dossier local `Week N` : création des dossiers, contrôle des tailles, fichiers déjà présents ignorés. Sans `dest_root`, simple liste. | `course_id`, `week` (ex. `6` ou `"Week 6"`, ou `all`), `dest_root` |
 | `moodle_weekly_digest` | Synthèse en un appel : nouveautés + échéances proches + retards + statistiques. Point de départ recommandé. | `days` (7 par défaut), `ahead_days` (14 par défaut) |

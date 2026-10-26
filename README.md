@@ -14,6 +14,8 @@ Read assignments, deadlines and course files straight out of the Moodle Web Serv
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Zero dependencies">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <b>English</b> ·
@@ -35,6 +37,11 @@ Read assignments, deadlines and course files straight out of the Moodle Web Serv
 > folders, lists what is still unsubmitted, and walks through the downloaded files with graded key points. It is
 > mounted as a git submodule in this repository at [`skill/moodle-course-watch/`](skill/moodle-course-watch/)
 > (clone with `--recurse-submodules`), and is also a standalone repo for anyone who wants only the skill.
+
+---
+
+> **Actively maintained.** Latest release **v1.3.0** (2026-10-27): quizzes are no longer a blind spot —
+> `moodle_quiz_status` reads real attempt state and scores. Full [changelog](#changelog-) at the end of this file.
 
 ## Preview 🖥️
 
@@ -75,8 +82,9 @@ No pip install. No node. No browser. Just python server.py.
 | `moodle_list_courses` | List every enrolled course with id, shortname and fullname. | — |
 | `moodle_recent_updates` | Content added or updated in the last N days (assignments, files, announcements), newest first. | `days` (default 7), `course_ids` |
 | `moodle_pending_assignments` | Unsubmitted assignments, split into **due soon** / **overdue** / **no pressure**, with deadline and days remaining. | `ahead_days` (default 14), `course_ids` |
+| `moodle_quiz_status` | Per-quiz attempt state straight from `mod_quiz_get_user_attempts`: **submitted** / **in progress** / **never started**, with best score, open–close window, time limit and a *window closed* flag. | `course_ids`, `only_pending` |
 | `moodle_course_files` | Section structure and file list for one course, including direct download URLs and modified times. **Metadata only — nothing is downloaded.** | `course_id` |
-| `moodle_download_week` | Download one week's files (slides + assignment attachments) into a local `Week N` folder. Creates folders, verifies sizes, skips files already present. Omit `dest_root` to get the list only. | `course_id`, `week` (e.g. `6` or `"Week 6"`, or `all`), `dest_root` |
+| `moodle_download_week` | Download one week's files (slides + assignment attachments) into a local folder named after the section — `Week N` when the section title carries a week number, otherwise the section's own title (`Online Judge Questions`, `Project Submission`). Creates folders, verifies sizes, skips files already present. Omit `dest_root` to get the list only. | `course_id`, `week` (e.g. `6` or `"Week 6"`, or `all`), `dest_root` |
 | `moodle_weekly_digest` | The one-shot summary: recent additions + due-soon + overdue + counts. Best starting point. | `days` (default 7), `ahead_days` (default 14) |
 
 > `moodle_download_week` only writes to your local disk — it never submits anything to Moodle. File URLs returned by the read tools already carry your token, so they download as-is: treat them as secrets and keep them out of logs, screenshots and public repos.
@@ -211,9 +219,15 @@ Check three things: Web Services and the REST protocol are enabled site-wide; th
 </details>
 
 <details>
-<summary><b>Turnitin or quiz deadlines are missing</b></summary>
+<summary><b>Turnitin deadlines are missing</b></summary>
 
-Expected. `turnitintooltwo` and `quiz` are separate modules without `mod_assign` semantics, so this server does not see them. Check those in the web UI.
+Expected. `turnitintooltwo` is its own module without `mod_assign` semantics and exposes no usable deadline field, so it is the one remaining blind spot. Check those in the web UI.
+</details>
+
+<details>
+<summary><b>Quiz deadlines are missing from <code>moodle_weekly_digest</code></b></summary>
+
+By design. Quizzes live in `mod_quiz`, not `mod_assign`, so they have their own tool: `moodle_quiz_status` returns attempt state, best score and the open–close window for every quiz.
 </details>
 
 <details>
@@ -245,9 +259,19 @@ Output is UTF-8. In legacy consoles run `chcp 65001` first, or use Windows Termi
 | Any MCP client | Works — plain JSON-RPC 2.0 over stdio |
 | Windows / macOS / Linux | Works — no platform-specific code |
 
+## Changelog 📌
+
+| Version | Date | Highlights |
+|---|---|---|
+| **1.3.0** | 2026-10-27 | New `moodle_quiz_status` — attempt state, best score and time windows read from `mod_quiz_get_user_attempts`. The quiz blind spot is closed; `moodle_weekly_digest` now points to it. |
+| **1.2.0** | 2026-10-27 | Week numbering is taken from section titles only. Blocks that carry no week number (`Online Judge Questions`, `Project Submission`) keep their own names instead of being silently renumbered. |
+| **1.1.0** | 2026-10-27 | New `moodle_download_week` — pulls a whole week's slides and assignment attachments, verifies size, and skips files that are already on disk. |
+| **1.0.0** | 2026-10-27 | First release: six read-only tools over the Moodle REST Web Service, stdlib only. |
+
 ## Roadmap 🗺️
 
-- [ ] Turnitin and quiz deadline support where the API allows
+- [x] Quiz deadlines and attempt status — shipped in 1.3.0 via `mod_quiz_get_user_attempts`
+- [ ] Turnitin support where the API allows
 - [ ] Optional local cache to cut repeated round-trips on large course lists
 - [ ] Pagination hints for accounts enrolled in very many courses
 - [ ] Submission *status* details (graded / feedback available) — still read-only

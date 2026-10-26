@@ -14,6 +14,8 @@ Moodle の Web Service API から課題・締切・コース資料を直接取�
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="依存ゼロ">
 <a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
 <a href="README.md">English</a> ·
@@ -35,6 +37,8 @@ Moodle の Web Service API から課題・締切・コース資料を直接取�
 > [`skill/moodle-course-watch/`](skill/moodle-course-watch/) (clone with `--recurse-submodules`), and also published
 > standalone.
 
+
+> **継続的にメンテナンスしています。** 最新リリースは **v1.3.0**（2026-10-27）：クイズはもう盲点ではありません。`moodle_quiz_status` が実際の受験状況と得点を読み取ります。変更履歴は[文末](README.md#changelog-)にあります。
 
 ## プレビュー 🖥️
 
@@ -75,6 +79,7 @@ pip 不要。node 不要。ブラウザ不要。python server.py だけ。
 | `moodle_list_courses` | 受講中コースをすべて列挙。コース ID・略称・正式名称を含みます。 | — |
 | `moodle_recent_updates` | 直近 N 日間に追加・更新されたもの（課題・ファイル・お知らせ）を新しい順に返します。 | `days`（既定 7）、`course_ids` |
 | `moodle_pending_assignments` | 未提出の課題を**締切間近** / **期限超過** / **余裕あり**に分類し、締切と残り日数を併記。 | `ahead_days`（既定 14）、`course_ids` |
+| `moodle_quiz_status` | クイズごとの受験状況（**提出済み** / **進行中** / **未受験**）を取得し、最高得点・公開期間・制限時間・「受付終了」フラグを併記。 | `course_ids`、`only_pending` |
 | `moodle_course_files` | 1 コースのセクション構成とファイル一覧、ダウンロード直リンク・更新日時付き。**メタデータのみで、ファイルは取得しません。** | `course_id` |
 | `moodle_download_week` | 指定した週のファイル（スライド + 課題添付）をローカルの `Week N` フォルダーへダウンロード。フォルダー作成・サイズ検証・既存ファイルのスキップを自動化。`dest_root` を省略すると一覧のみ返します。 | `course_id`、`week`（例 `6` または `"Week 6"`、`all` で全週）、`dest_root` |
 | `moodle_weekly_digest` | 一括サマリー：新着＋締切間近＋期限超過＋統計。まずはこれから。 | `days`（既定 7）、`ahead_days`（既定 14） |
